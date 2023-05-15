@@ -1,0 +1,26 @@
+.background {
+  background: #f5f5f5;
+}
+.homeloginbtn {
+  position: absolute;
+  color: black;
+  background: #82b0ff;
+  width: 112px;
+  height: 62px;
+  right: 18px;
+  top: 12px;
+  border-radius: 5px;
+  border: none;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 29px;
+}
+.navbar {
+  height: 87px;
+  left: 0px;
+  top: 0px;
+
+  background: #383839;
+}

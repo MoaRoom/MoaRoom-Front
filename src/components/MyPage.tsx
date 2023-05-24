@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import "../style/home.css";
 import LectureList from "../props/LectureList";
-import Modal from "./Modal";
+import Modal from "../props/Modal";
 type SomeComponentProps = RouteComponentProps;
 const MyPage: FC<SomeComponentProps> = ({ history }) => {
   const {
@@ -25,44 +25,60 @@ const MyPage: FC<SomeComponentProps> = ({ history }) => {
   };
   const updateProfile = () => {};
   const deleteProfile = () => {};
-  const createLecture = () => {};
-  const deleteLecture = () => {};
 
-  // The selected role
-  const [selectedRole, setSelectedRole] = useState<String>();
-  const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedRole(event.target.value);
-  };
+  // create modal
+  const [iscreateModalOpen, setcreateModalOpen] = useState<boolean>(false);
 
-  // modal
-  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+  const onClickTogglecreateModal = useCallback(() => {
+    setcreateModalOpen(!iscreateModalOpen);
+  }, [iscreateModalOpen]);
 
-  const onClickToggleModal = useCallback(() => {
-    setOpenModal(!isOpenModal);
-  }, [isOpenModal]);
+  // delete modal
+  const [isdeleteModalOpen, setdeleteModalOpen] = useState<boolean>(false);
 
-  const submitData = (data: any) => {
+  const onClickToggledeleteModal = useCallback(() => {
+    setdeleteModalOpen(!isdeleteModalOpen);
+  }, [isdeleteModalOpen]);
+
+  const createLecture = (data: any) => {
     let params = {
-      user_id: data.user_id,
-      password: data.password,
-      name: data.name,
-      user_num: data.user_num,
-      role: Number(selectedRole),
+      title: data.title,
+      room: data.room,
     };
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
     axios
       .post("http://localhost:3000/api/signup", params)
-      .then(function (response) {
+      .then(function(response) {
         reset();
         setTimeout(() => {
           history.push("/login");
         }, 3000);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
   };
+  const deleteLecture = (data: any) => {
+    let params = {
+      title: data.title,
+      room: data.room,
+    };
+    console.log(params);
+    // TODO 서버 나오면 디버깅 필요
+    axios
+      .post("http://localhost:3000/api/signup", params)
+      .then(function(response) {
+        reset();
+        setTimeout(() => {
+          history.push("/login");
+        }, 3000);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <div className="background">
@@ -87,11 +103,100 @@ const MyPage: FC<SomeComponentProps> = ({ history }) => {
             </button>
           </div>
         </div>
-        {/* {isOpenModal && (
-          <Modal onClickToggleModal={onClickToggleModal}>
-            이곳에 children이 들어갑니다.
+        {iscreateModalOpen && (
+          <Modal onClickToggleModal={onClickTogglecreateModal}>
+            <form autoComplete="off" onSubmit={handleSubmit(createLecture)}>
+              <div className="mt-3 mb-3">
+                <label className="form-label">강의명</label>
+                <input
+                  type="text"
+                  className="form-control form-control-sm"
+                  id="exampleFormControlInput3"
+                  {...register("title", {
+                    required: "title is required!",
+                  })}
+                />
+                {errors.title && (
+                  <p className="text-danger" style={{ fontSize: 14 }}>
+                    errors.title.message
+                  </p>
+                )}
+              </div>
+              <div className="mt-3 mb-3">
+                <label className="form-label">분반</label>
+                <input
+                  type="number"
+                  className="form-control form-control-sm"
+                  id="exampleFormControlInput3"
+                  {...register("room", {
+                    required: "room is required!",
+                  })}
+                />
+                {errors.room && (
+                  <p className="text-danger" style={{ fontSize: 14 }}>
+                    errors.room.message
+                  </p>
+                )}
+              </div>
+              <div className="mt-4 mb-3 text-center ">
+                <button
+                  className="btn btn-outline-success text-center shadow-none mb-3"
+                  // type="submit"
+                  onClick={createLecture}
+                >
+                  강의 개설
+                </button>
+              </div>
+            </form>
           </Modal>
-        )} */}
+        )}
+        {isdeleteModalOpen && (
+          <Modal onClickToggleModal={onClickToggledeleteModal}>
+            <form autoComplete="off" onSubmit={handleSubmit(deleteLecture)}>
+              <div className="mt-3 mb-3">
+                <label className="form-label">강의명</label>
+                <input
+                  type="text"
+                  className="form-control form-control-sm"
+                  id="exampleFormControlInput3"
+                  {...register("title", {
+                    required: "title is required!",
+                  })}
+                />
+                {errors.title && (
+                  <p className="text-danger" style={{ fontSize: 14 }}>
+                    errors.title.message
+                  </p>
+                )}
+              </div>
+              <div className="mt-3 mb-3">
+                <label className="form-label">분반</label>
+                <input
+                  type="number"
+                  className="form-control form-control-sm"
+                  id="exampleFormControlInput3"
+                  {...register("room", {
+                    required: "room is required!",
+                  })}
+                />
+                {errors.room && (
+                  <p className="text-danger" style={{ fontSize: 14 }}>
+                    errors.room.message
+                  </p>
+                )}
+              </div>
+              <div className="mt-4 mb-3 text-center ">
+                <button
+                  className="btn btn-outline-danger text-center shadow-none mb-3"
+                  // type="submit"
+                  onClick={deleteLecture}
+                >
+                  강의 삭제
+                </button>
+              </div>
+            </form>
+          </Modal>
+        )}
         <div className="container">
           <div
             className="row d-flex justify-content-space-around"
@@ -145,14 +250,14 @@ const MyPage: FC<SomeComponentProps> = ({ history }) => {
               <button
                 className="btn btn-outline-success text-center shadow-none mb-3"
                 type="submit"
-                onClick={onClickToggleModal}
+                onClick={onClickTogglecreateModal}
               >
                 강의 개설
               </button>
               <button
                 className="btn btn-outline-danger text-center shadow-none mb-3"
                 type="submit"
-                onClick={deleteLecture}
+                onClick={onClickToggledeleteModal}
               >
                 강의 삭제
               </button>

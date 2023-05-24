@@ -36,7 +36,7 @@ const SignUp: FC<SomeComponentProps> = ({ history }) => {
     // TODO 서버 나오면 디버깅 필요
     axios
       .post("http://localhost:3000/api/signup", params)
-      .then(function (response) {
+      .then(function(response) {
         toast.success(response.data.message, {
           position: "top-right",
           autoClose: 3000,
@@ -52,7 +52,7 @@ const SignUp: FC<SomeComponentProps> = ({ history }) => {
           history.push("/login");
         }, 3000);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
   };

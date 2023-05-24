@@ -17,7 +17,7 @@ const MyPage: FC<SomeComponentProps> = ({ history }) => {
   // nav bar login btn
   const logout = () => {
     localStorage.clear();
-    history.push("/home");
+    history.push("/");
   };
   const mypage = () => {
     localStorage.clear();

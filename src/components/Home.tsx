@@ -22,7 +22,7 @@ const Home: FC<SomeComponentProps> = ({ history }) => {
             <h3 className="m-3">Logo</h3>
           </div>
           <div>
-            <button type="submit" className="homeloginbtn" onClick={login}>
+            <button type="submit" className="navbtn" onClick={login}>
               로그인
             </button>
           </div>

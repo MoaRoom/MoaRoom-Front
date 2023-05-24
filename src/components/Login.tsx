@@ -23,6 +23,10 @@ const Login: FC<SomeComponentProps> = ({ history }): JSX.Element => {
       password: data.password,
     };
     console.log(params);
+    // 일단 마이페이지로 이동
+    localStorage.clear();
+    history.push("/mypage");
+
     // TODO 서버 나오면 디버깅 필요
     axios
       .post("http://localhost:3000/api/login", params)
@@ -76,7 +80,7 @@ const Login: FC<SomeComponentProps> = ({ history }): JSX.Element => {
               <h3 className="m-3">Logo</h3>
             </div>
             <div>
-              <button type="submit" className="homeloginbtn" onClick={login}>
+              <button type="submit" className="navbtn" onClick={login}>
                 로그인
               </button>
             </div>

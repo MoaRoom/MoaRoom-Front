@@ -30,7 +30,7 @@ const Login: FC<SomeComponentProps> = ({ history }): JSX.Element => {
     // TODO 서버 나오면 디버깅 필요
     axios
       .post("http://localhost:3000/api/login", params)
-      .then(function (response) {
+      .then(function(response) {
         //   IF EMAIL ALREADY EXISTS
         if (response.data.success === false) {
           toast.error(response.data.error, {
@@ -60,30 +60,29 @@ const Login: FC<SomeComponentProps> = ({ history }): JSX.Element => {
           }, 3000);
         }
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
   };
   return (
     <>
       <div className="background">
-        <div className="navbar">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingLeft: 50,
-              paddingRight: 50,
-            }}
-          >
-            <div>
-              <h3 className="m-3">Logo</h3>
-            </div>
-            <div>
-              <button type="submit" className="navbtn" onClick={login}>
-                로그인
-              </button>
-            </div>
+        <div
+          className="navbar"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingLeft: 50,
+            paddingRight: 50,
+          }}
+        >
+          <div>
+            <h3 className="m-3">Logo</h3>
+          </div>
+          <div>
+            <button type="submit" className="navbtn" onClick={login}>
+              로그인
+            </button>
           </div>
         </div>
         <div className="container">

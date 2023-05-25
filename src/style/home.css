@@ -4,13 +4,12 @@
   height: 100%;
   width: 100%;
 }
+
 .navbtn {
   color: black;
   background: #82b0ff;
   width: 100px;
   height: 55px;
-  right: 18px;
-  top: 12px;
   border-radius: 5px;
   border: none;
   font-family: "Inter";
@@ -54,11 +53,13 @@
   background: #f5f5f5;
   border: none;
 }
+
 .profile-lecture-text {
   text-align: center;
   width: 33%;
   align-items: center;
 }
+
 .dialog-box {
   width: 300px;
   height: 300px;
@@ -73,6 +74,7 @@
   border: 0.5px solid black;
   z-index: 10000;
 }
+
 .backdrop {
   width: 100vw;
   height: 100vh;
@@ -81,6 +83,7 @@
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.2);
 }
+
 .bg {
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
@@ -94,6 +97,7 @@
   width: 100%;
   z-index: 100;
 }
+
 .floating-button {
   display: flex;
   position: fixed;
@@ -105,4 +109,8 @@
   border: none;
   width: 75px;
   height: 75px;
+}
+
+.code {
+  white-space: pre-wrap;
 }

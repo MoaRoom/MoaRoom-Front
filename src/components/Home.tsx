@@ -10,23 +10,22 @@ const Home: FC<SomeComponentProps> = ({ history }) => {
   return (
     <>
       <div className="background">
-        <div className="navbar">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingLeft: 50,
-              paddingRight: 50,
-            }}
-          >
-            <div>
-              <h3 className="m-3">Logo</h3>
-            </div>
-            <div>
-              <button type="submit" className="navbtn" onClick={login}>
-                로그인
-              </button>
-            </div>
+        <div
+          className="navbar"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingLeft: 50,
+            paddingRight: 50,
+          }}
+        >
+          <div>
+            <h3 className="m-3">Logo</h3>
+          </div>
+          <div>
+            <button type="submit" className="navbtn" onClick={login}>
+              로그인
+            </button>
           </div>
         </div>
 

@@ -1,12 +1,11 @@
 import React, { FC, useState } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import "../style/home.css";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-type SomeComponentProps = RouteComponentProps;
-const SignUp: FC<SomeComponentProps> = ({ history }) => {
+const SignUp: FC = () => {
   const {
     register,
     handleSubmit,
@@ -15,9 +14,11 @@ const SignUp: FC<SomeComponentProps> = ({ history }) => {
     formState: { errors },
   } = useForm();
   // nav bar login btn
+  const navigate = useNavigate();
   const login = () => {
-    localStorage.clear();
-    history.push("/login");
+    navigate("/login", {
+      state: {},
+    });
   };
   // The selected role
   const [selectedRole, setSelectedRole] = useState<String>();
@@ -49,7 +50,9 @@ const SignUp: FC<SomeComponentProps> = ({ history }) => {
         });
         reset();
         setTimeout(() => {
-          history.push("/login");
+          navigate("/login", {
+            state: {},
+          });
         }, 3000);
       })
       .catch(function(error) {

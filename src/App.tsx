@@ -6,21 +6,22 @@ import Login from "./components/Login";
 import MyPage from "./components/MyPage";
 import Assignment from "./components/Assignment";
 import Score from "./components/Score";
-// import PrivateRoute from "./auth/PrivateRoute";
 import Home from "./components/Home";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Submit from "./components/Submit";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={SignUp} />
-        <Route exact path="/mypage" component={MyPage} />
-        <Route exact path="/assignment" component={Assignment} />
-        <Route exact path="/score" component={Score} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<SignUp />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/assignment" element={<Assignment />} />
+        <Route path="/score" element={<Score />} />
+        <Route path="/submit" element={<Submit />} />
+      </Routes>
     </BrowserRouter>
   );
 }

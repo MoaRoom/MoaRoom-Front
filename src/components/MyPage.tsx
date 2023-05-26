@@ -1,12 +1,12 @@
 import React, { FC, useState, useCallback } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../style/home.css";
 import LectureList from "../props/LectureList";
 import Modal from "../props/Modal";
-type SomeComponentProps = RouteComponentProps;
-const MyPage: FC<SomeComponentProps> = ({ history }) => {
+const MyPage: FC = () => {
   const {
     register,
     handleSubmit,
@@ -15,13 +15,16 @@ const MyPage: FC<SomeComponentProps> = ({ history }) => {
     formState: { errors },
   } = useForm();
   // nav bar login btn
+  const navigate = useNavigate();
   const logout = () => {
-    localStorage.clear();
-    history.push("/");
+    navigate("/", {
+      state: {},
+    });
   };
   const mypage = () => {
-    localStorage.clear();
-    history.push("/mypage");
+    navigate("/mypage", {
+      state: {},
+    });
   };
   const updateProfile = () => {};
   const deleteProfile = () => {};
@@ -52,7 +55,9 @@ const MyPage: FC<SomeComponentProps> = ({ history }) => {
       .then(function(response) {
         reset();
         setTimeout(() => {
-          history.push("/login");
+          navigate("/login", {
+            state: {},
+          });
         }, 3000);
       })
       .catch(function(error) {
@@ -71,7 +76,9 @@ const MyPage: FC<SomeComponentProps> = ({ history }) => {
       .then(function(response) {
         reset();
         setTimeout(() => {
-          history.push("/login");
+          navigate("/login", {
+            state: {},
+          });
         }, 3000);
       })
       .catch(function(error) {

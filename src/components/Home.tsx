@@ -1,11 +1,12 @@
 import React, { FC } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../style/home.css";
-type SomeComponentProps = RouteComponentProps;
-const Home: FC<SomeComponentProps> = ({ history }) => {
+const Home: FC = () => {
+  const navigate = useNavigate();
   const login = () => {
-    localStorage.clear();
-    history.push("/login");
+    navigate("/login", {
+      state: {},
+    });
   };
   return (
     <>

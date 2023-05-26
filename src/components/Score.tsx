@@ -1,12 +1,11 @@
 import React, { FC, useCallback, useState, useEffect } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { RouteComponentProps } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../props/Modal";
 import File from "../props/File";
 import "../style/home.css";
-type SomeComponentProps = RouteComponentProps;
-const Score: FC<SomeComponentProps> = ({ history }) => {
+const Score: FC = () => {
   const {
     register,
     handleSubmit,
@@ -14,14 +13,20 @@ const Score: FC<SomeComponentProps> = ({ history }) => {
     reset,
     formState: { errors },
   } = useForm();
+  // user info
+  const location = useLocation();
+  const { user_name } = location.state;
   // nav bar login btn
+  const navigate = useNavigate();
   const logout = () => {
-    localStorage.clear();
-    history.push("/");
+    navigate("/", {
+      state: {},
+    });
   };
   const mypage = () => {
-    localStorage.clear();
-    history.push("/mypage");
+    navigate("/mypage", {
+      state: {},
+    });
   };
   const updateProfile = () => {};
   const deleteProfile = () => {};
@@ -63,7 +68,9 @@ const Score: FC<SomeComponentProps> = ({ history }) => {
       .then(function(response) {
         reset();
         setTimeout(() => {
-          history.push("/login");
+          navigate("/login", {
+            state: {},
+          });
         }, 3000);
       })
       .catch(function(error) {
@@ -82,7 +89,9 @@ const Score: FC<SomeComponentProps> = ({ history }) => {
       .then(function(response) {
         reset();
         setTimeout(() => {
-          history.push("/login");
+          navigate("/login", {
+            state: {},
+          });
         }, 3000);
       })
       .catch(function(error) {
@@ -186,7 +195,7 @@ const Score: FC<SomeComponentProps> = ({ history }) => {
                       />
                     </div>
                     <div className="mb-1">
-                      <p className="">이름: 금나연</p>
+                      <p className="">이름: {user_name}</p>
                       <p className="">학번: 1914395</p>
                       <p className="">강의명: 프로그래밍 입문</p>
                       <p className="">교수: 이종우</p>

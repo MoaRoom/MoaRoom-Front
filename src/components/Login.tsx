@@ -5,17 +5,18 @@ import "../style/home.css";
 import axios from "axios";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import { RouteComponentProps } from "react-router";
-type SomeComponentProps = RouteComponentProps;
-const Login: FC<SomeComponentProps> = ({ history }): JSX.Element => {
+import { useNavigate } from "react-router";
+const Login: FC = (): JSX.Element => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const goSignUp = () => {
-    localStorage.clear();
-    history.push("/register");
+    navigate("/register", {
+      state: {},
+    });
   };
   const login = (data: any) => {
     let params = {
@@ -24,8 +25,9 @@ const Login: FC<SomeComponentProps> = ({ history }): JSX.Element => {
     };
     console.log(params);
     // 일단 마이페이지로 이동
-    localStorage.clear();
-    history.push("/mypage");
+    navigate("/mypage", {
+      state: {},
+    });
 
     // TODO 서버 나오면 디버깅 필요
     axios
@@ -56,7 +58,9 @@ const Login: FC<SomeComponentProps> = ({ history }): JSX.Element => {
           });
           localStorage.setItem("auth", response.data.token);
           setTimeout(() => {
-            history.push("/");
+            navigate("/", {
+              state: {},
+            });
           }, 3000);
         }
       })

@@ -1,16 +1,18 @@
 import React, { FC, useCallback, useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../style/home.css";
 import Modal from "../props/Modal";
-type SomeComponentProps = RouteComponentProps;
-const Assignment: FC<SomeComponentProps> = ({ history }) => {
+const Assignment: FC = () => {
+  const navigate = useNavigate();
   const logout = () => {
-    localStorage.clear();
-    history.push("/");
+    navigate("/", {
+      state: {},
+    });
   };
   const mypage = () => {
-    localStorage.clear();
-    history.push("/mypage");
+    navigate("/mypage", {
+      state: {},
+    });
   };
   // create modal
   const [isModalOpen, setModalOpen] = useState<boolean>(false);

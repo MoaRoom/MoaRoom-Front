@@ -8,6 +8,7 @@ import Assignment from "./components/Assignment";
 import Score from "./components/Score";
 import Home from "./components/Home";
 import Submit from "./components/Submit";
+import LecturePage from "./components/LecturePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/assignment" element={<Assignment />} />
         <Route path="/score" element={<Score />} />
         <Route path="/submit" element={<Submit />} />
+        <Route path="/lecture" element={<LecturePage />} />
       </Routes>
     </BrowserRouter>
   );

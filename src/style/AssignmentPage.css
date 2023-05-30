@@ -1,0 +1,78 @@
+.background {
+    background: #f5f5f5;
+    overflow: auto;
+    min-height: 800px;
+    height: 100%;
+    width: 100%;
+}
+  
+.navbtn {
+    color: black;
+    background: #82b0ff;
+    width: 120px;
+    height: 55px;
+    border-radius: 5px;
+    border: none;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 29px;
+}
+.navbar {
+    height: 87px;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    background: #383839;
+}
+
+.listheader{
+    background: #95ABD2;
+    border-color: #003BA3;
+    border-style:solid;
+    border-width: 3px;
+    color:black;
+    padding-top: 15px;
+}
+
+.lecture-text {
+    text-align: center;
+    width: 33%;
+    align-items: center;
+}
+
+.lecture-list{
+    top: 327px;
+    width: 100%;
+}
+
+.search{
+    top: 227px;
+    right: 5px;
+}
+
+#searchtext{
+    height: 32px;
+}
+
+#searchbtn{
+    width: 24px;
+    height: 24px;
+    
+}
+
+.dialog-box {
+    width: 300px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
+    box-sizing: border-box;
+    background-color: white;
+    border: 0.5px solid black;
+    z-index: 10000;
+  }

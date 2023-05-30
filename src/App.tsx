@@ -10,6 +10,8 @@ import Home from "./components/Home";
 import Submit from "./components/Submit";
 import LecturePage from "./components/LecturePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AssignmentPage from "./components/AssignmentPage";
+import NewAssignment from "./components/NewAssignment";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +25,8 @@ function App() {
         <Route path="/score" element={<Score />} />
         <Route path="/submit" element={<Submit />} />
         <Route path="/lecture" element={<LecturePage />} />
+        <Route path="/assignmentList" element={<AssignmentPage />} />
+        <Route path="/newassignment" element={<NewAssignment />}/>
       </Routes>
     </BrowserRouter>
   );

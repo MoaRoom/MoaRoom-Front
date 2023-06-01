@@ -43,23 +43,12 @@
 }
 
 .lecture-list{
-    position: fixed;
-    top: 327px;
+    position: absolute;
+    top: 300px;
     width: 100%;
 }
 
 .search{
-    position: fixed;
-    top: 227px;
-    right: 5px;
-}
-
-#searchtext{
-    height: 32px;
-}
-
-#searchbtn{
-    width: 24px;
-    height: 24px;
-    
+    position: absolute;
+    right: 10px;
 }

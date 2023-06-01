@@ -32,6 +32,11 @@ const AssignmentPage: FC = () => {
             state: {},
           });
       };
+      const newAssignment = () => {
+        navigate("/newassignment", {
+            state: {},
+          });
+      };
       const deleteAssignment = (data: any) => {
         let params = {
           title: data.title,
@@ -57,73 +62,73 @@ const AssignmentPage: FC = () => {
     return(
         <>
             <div className="background">
-            <div
-          className="navbar"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <div>
-            <h3 className="m-3">Logo</h3>
-          </div>
-          <div>
-            <button className="navbtn" onClick={logout}>
-              로그아웃
-            </button>
-            <button className="navbtn" onClick={mypage}>
-              마이페이지
-            </button>
-          </div>
-        </div>
-        {isdeleteModalOpen && (
-          <AssignmentModal onClickToggleModal={onClickToggledeleteModal}>
-            <form autoComplete="off" onSubmit={handleSubmit(deleteAssignment)}>
-              <div className="mt-3 mb-3">
-                <label className="form-label">과제명</label>
-                <input
-                  type="text"
-                  className="form-control form-control-sm"
-                  id="exampleFormControlInput3"
-                  {...register("title", {
-                    required: "title is required!",
-                  })}
-                />
-                {errors.title && (
-                  <p className="text-danger" style={{ fontSize: 14 }}>
-                    errors.title.message
-                  </p>
-                )}
+              <div
+                className="navbar"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  paddingLeft: 50,
+                  paddingRight: 50,
+                }}
+              >
+                <div>
+                  <h3 className="m-3">Logo</h3>
+                </div>
+                <div>
+                  <button className="navbtn" onClick={logout}>
+                    로그아웃
+                  </button>
+                  <button className="navbtn" onClick={mypage}>
+                    마이페이지
+                  </button>
+                </div>
               </div>
-              <div className="mt-4 mb-3 text-center ">
-                <button
-                  className="btn btn-outline-danger text-center shadow-none mb-3"
-                  // type="submit"
-                  onClick={deleteAssignment}
-                >
-                  강의 삭제
-                </button>
-              </div>
-            </form>
-          </AssignmentModal>
-        )}
+              {isdeleteModalOpen && (
+                <AssignmentModal onClickToggleModal={onClickToggledeleteModal}>
+                  <form autoComplete="off" onSubmit={handleSubmit(deleteAssignment)}>
+                    <div className="mt-3 mb-3">
+                      <label className="form-label">과제명</label>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        id="exampleFormControlInput3"
+                        {...register("title", {
+                          required: "title is required!",
+                        })}
+                      />
+                      {errors.title && (
+                        <p className="text-danger" style={{ fontSize: 14 }}>
+                          errors.title.message
+                        </p>
+                      )}
+                    </div>
+                    <div className="mt-4 mb-3 text-center ">
+                      <button
+                        className="btn btn-outline-danger text-center shadow-none mb-3"
+                        // type="submit"
+                        onClick={deleteAssignment}
+                      >
+                        강의 삭제
+                      </button>
+                    </div>
+                  </form>
+                </AssignmentModal>
+              )}
 
-        <div className="card mb-3 mt-3"
-                     style={{
-                        float: "left",
-                        width: "20%",
-                        top: "20px",
-                        left: "20px",
-                        background: "#E2EDFF"
-                    }}>
-            <div className="card-body">
-            <p>강의명: 프로그래밍 입문</p>
-            <p>담당 교수: 이종우</p>
-            <p>분반: 1</p>
-            </div>
-        </div>
+              <div className="card mb-3 mt-3"
+                          style={{
+                              float: "left",
+                              width: "20%",
+                              top: "20px",
+                              left: "20px",
+                              background: "#E2EDFF"
+                          }}>
+                  <div className="card-body">
+                  <p>강의명: 프로그래밍 입문</p>
+                  <p>담당 교수: 이종우</p>
+                  <p>분반: 1</p>
+                  </div>
+              </div>
               {/* search form */}
               <form className="search">
                 <input id="searchtext" type="text"></input>
@@ -131,33 +136,36 @@ const AssignmentPage: FC = () => {
                   <img id="searchbtn" src="https://e7.pngegg.com/pngimages/446/413/png-clipart-computer-icons-button-search-box-button-window-rim.png"></img>
                 </button>
               </form>
-            <div className="lecture-list">
-            <div className="card mb-2 mt-2 rounded">
-      <div className="card-body listheader">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-                <p className="lecture-text">과제명</p>
-                <p className="lecture-text" style={{textAlign:"right", paddingRight:"60px"}}>진행상황</p>
-            </div>
-            </div>
-            </div>
-            <AssignmentList />
-            <Paging />
-            <button style={{
-                float:"right"
-            }}>과제 추가</button>
-            <button 
-                type="submit"
-                onClick={onClickToggledeleteModal}
-            style={{
-                float:"right"
-            }}>과제 삭제</button>
-
-            </div>
+              <div className="lecture-list">
+                <div className="card mb-2 mt-2 rounded">
+                  <div className="card-body listheader">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p className="lecture-text">과제명</p>
+                      <p className="lecture-text" style={{textAlign:"right", paddingRight:"60px"}}>진행상황</p>
+                    </div>
+                  </div>
+                </div>
+                <AssignmentList />
+                <button 
+                  type="submit"
+                  onClick={onClickToggledeleteModal}
+                  style={{
+                      float:"right"}}>
+                  과제 삭제
+                </button>
+                <button 
+                  type="submit"
+                  onClick={newAssignment}
+                  style={{float:"right"}}>
+                    과제 추가
+                </button>
+                <Paging />
+              </div>
             </div>
         </>
     )

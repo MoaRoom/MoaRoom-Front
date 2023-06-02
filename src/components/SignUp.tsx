@@ -27,7 +27,7 @@ const SignUp: FC = () => {
   };
   const submitData = (data: any) => {
     let params = {
-      user_id: data.user_id,
+      id: data.user_id,
       password: data.password,
       name: data.name,
       user_num: data.user_num,
@@ -36,7 +36,7 @@ const SignUp: FC = () => {
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
     axios
-      .post("http://localhost:3000/api/signup", params)
+      .post("http://moaroom-back.duckdns.org:8080/user/new", params)
       .then(function(response) {
         toast.success(response.data.message, {
           position: "top-right",

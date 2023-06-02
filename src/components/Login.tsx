@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../style/home.css";
@@ -20,18 +20,14 @@ const Login: FC = (): JSX.Element => {
   };
   const login = (data: any) => {
     let params = {
-      email: data.email,
+      id: data.id,
       password: data.password,
     };
     console.log(params);
-    // 일단 마이페이지로 이동
-    navigate("/mypage", {
-      state: {},
-    });
 
     // TODO 서버 나오면 디버깅 필요
     axios
-      .post("http://localhost:3000/api/login", params)
+      .post("http://moaroom-back.duckdns.org:8080/login", params)
       .then(function(response) {
         //   IF EMAIL ALREADY EXISTS
         if (response.data.success === false) {
@@ -46,6 +42,7 @@ const Login: FC = (): JSX.Element => {
             toastId: "my_toast",
           });
         } else {
+          console.log(response)
           toast.success(response.data.message, {
             position: "top-right",
             autoClose: 3000,
@@ -59,7 +56,7 @@ const Login: FC = (): JSX.Element => {
           localStorage.setItem("auth", response.data.token);
           setTimeout(() => {
             navigate("/", {
-              state: {},
+              state: { user_id: response.data },
             });
           }, 3000);
         }
@@ -104,16 +101,16 @@ const Login: FC = (): JSX.Element => {
                     <div className="mb-3 mt-4">
                       <label className="form-label">아이디</label>
                       <input
-                        type="email"
+                        type="id"
                         className="form-control shadow-none"
                         id="exampleFormControlInput1"
-                        {...register("email", {
-                          required: "Email is required!",
+                        {...register("id", {
+                          required: "id is required!",
                         })}
                       />
-                      {errors.email && (
+                      {errors.id && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
-                          errors.email.message
+                          errors.id.message
                         </p>
                       )}
                     </div>
@@ -135,12 +132,6 @@ const Login: FC = (): JSX.Element => {
                     </div>
                     <div
                       className="text-center mt-4 "
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        paddingLeft: 50,
-                        paddingRight: 50,
-                      }}
                     >
                       <button
                         className="btn btn-outline-primary text-center shadow-none mb-3"

@@ -1,8 +1,10 @@
 import React, { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../style/home.css";
 const Home: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const user_id = location.state.user_id;
   const login = () => {
     navigate("/login", {
       state: {},

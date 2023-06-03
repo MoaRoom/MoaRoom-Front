@@ -1,5 +1,4 @@
 import React, { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -7,23 +6,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../style/AssignmentPage.css";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Navbar from "./Navbar";
 const SignUp: FC = () => {
     const [startDate, setStartDate] = useState<Date|null>(new Date());
     const [dueDate, setDueDate] = useState<Date|null>(null);
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm();
-  // nav bar login btn
-  const navigate = useNavigate();
-  const login = () => {
-    navigate("/login", {
-      state: {},
-    });
-  };
   // The selected role
   const [selectedRole, setSelectedRole] = useState<String>();
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,27 +52,7 @@ const SignUp: FC = () => {
   return (
     <>
       <div className="background">
-      <div
-          className="navbar"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <div>
-            <h3 className="m-3">Logo</h3>
-          </div>
-          <div>
-            <button className="navbtn">
-              로그아웃
-            </button>
-            <button className="navbtn">
-              마이페이지
-            </button>
-          </div>
-        </div>
+      <Navbar />
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"

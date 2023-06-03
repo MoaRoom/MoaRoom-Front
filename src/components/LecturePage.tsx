@@ -1,22 +1,14 @@
 import React, { FC, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import "../style/LecturePage.css";
 import axios from "axios";
 import LectureList from "../props/LectureList";
 import Paging from "../components/Paging";
+import Navbar from "./Navbar";
 
 const LecturePage: FC = () => {
-    const navigate = useNavigate();
-    const logout = () => {
-        navigate("/home", {
-            state: {},
-          });
-      };
-      const mypage = () => {
-        navigate("/mypage", {
-            state: {},
-          });
-      };
+    const location = useLocation();
+    const user_id = location.state.user_id;
       useEffect(() => {
         axios
           .get("http://localhost:8080/lecture/all")
@@ -27,27 +19,7 @@ const LecturePage: FC = () => {
     return(
         <>
           <div className="background">
-            <div
-              className="navbar"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                paddingLeft: 50,
-                paddingRight: 50,
-              }}
-            >
-              <div>
-                <h3 className="m-3">Logo</h3>
-              </div>
-              <div>
-                <button className="navbtn" onClick={logout}>
-                  로그아웃
-                </button>
-                <button className="navbtn" onClick={mypage}>
-                  마이페이지
-                </button>
-              </div>
-            </div>
+            <Navbar />
             <div className="search">
               <input id="searchtext" type="text"></input>
               <button>

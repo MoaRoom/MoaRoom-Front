@@ -5,6 +5,7 @@ import axios from "axios";
 import "../style/home.css";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Navbar from "./Navbar";
 const SignUp: FC = () => {
   const {
     register,
@@ -62,24 +63,7 @@ const SignUp: FC = () => {
   return (
     <>
       <div className="background">
-        <div
-          className="navbar"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <div>
-            <h3 className="m-3">Logo</h3>
-          </div>
-          <div>
-            <button type="submit" className="navbtn" onClick={login}>
-              로그인
-            </button>
-          </div>
-        </div>
+        <Navbar/>
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"
@@ -200,7 +184,6 @@ const SignUp: FC = () => {
                       <button
                         className="btn btn-outline-primary text-center shadow-none mb-3"
                         type="submit"
-                        onClick={submitData}
                       >
                         회원가입
                       </button>

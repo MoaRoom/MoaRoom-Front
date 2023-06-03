@@ -6,6 +6,7 @@ import "../style/LecturePage.css";
 import Paging from "../components/Paging";
 import AssignmentList from "../props/AssignmentList";
 import AssignmentModal from "../props/AssignmentModal";
+import Navbar from "./Navbar";
 
 
 const AssignmentPage: FC = () => {
@@ -22,16 +23,6 @@ const AssignmentPage: FC = () => {
     const onClickToggledeleteModal = useCallback(() => {
         setdeleteModalOpen(!isdeleteModalOpen);
     }, [isdeleteModalOpen]);
-    const logout = () => {
-        navigate("/home", {
-            state: {},
-          });
-      };
-      const mypage = () => {
-        navigate("/mypage", {
-            state: {},
-          });
-      };
       const newAssignment = () => {
         navigate("/newassignment", {
             state: {},
@@ -62,27 +53,7 @@ const AssignmentPage: FC = () => {
     return(
         <>
             <div className="background">
-              <div
-                className="navbar"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  paddingLeft: 50,
-                  paddingRight: 50,
-                }}
-              >
-                <div>
-                  <h3 className="m-3">Logo</h3>
-                </div>
-                <div>
-                  <button className="navbtn" onClick={logout}>
-                    로그아웃
-                  </button>
-                  <button className="navbtn" onClick={mypage}>
-                    마이페이지
-                  </button>
-                </div>
-              </div>
+              <Navbar />
               {isdeleteModalOpen && (
                 <AssignmentModal onClickToggleModal={onClickToggledeleteModal}>
                   <form autoComplete="off" onSubmit={handleSubmit(deleteAssignment)}>

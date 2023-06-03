@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../props/Modal";
 import File from "../props/File";
 import "../style/home.css";
+import Navbar from "./Navbar";
 const Score: FC = () => {
   const {
     register,
@@ -18,16 +19,6 @@ const Score: FC = () => {
   const { user_name } = location.state;
   // nav bar login btn
   const navigate = useNavigate();
-  const logout = () => {
-    navigate("/", {
-      state: {},
-    });
-  };
-  const mypage = () => {
-    navigate("/mypage", {
-      state: {},
-    });
-  };
   const updateProfile = () => {};
   const deleteProfile = () => {};
 
@@ -102,27 +93,7 @@ const Score: FC = () => {
   return (
     <>
       <div className="background">
-        <div
-          className="navbar"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <div>
-            <h3 className="m-3">Logo</h3>
-          </div>
-          <div>
-            <button className="navbtn" onClick={logout}>
-              로그아웃
-            </button>
-            <button className="navbtn" onClick={mypage}>
-              마이페이지
-            </button>
-          </div>
-        </div>
+        <Navbar />
         {isautoModalOpen && (
           <Modal onClickToggleModal={onClickToggleautoModal}>
             <form autoComplete="off" onSubmit={handleSubmit(createLecture)}>

@@ -1,19 +1,8 @@
 import React, { FC, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../style/home.css";
 import Modal from "../props/Modal";
+import Navbar from "./Navbar";
 const Assignment: FC = () => {
-  const navigate = useNavigate();
-  const logout = () => {
-    navigate("/", {
-      state: {},
-    });
-  };
-  const mypage = () => {
-    navigate("/mypage", {
-      state: {},
-    });
-  };
   // create modal
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -24,27 +13,7 @@ const Assignment: FC = () => {
   return (
     <>
       <div className="background">
-        <div
-          className="navbar"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <div>
-            <h3 className="m-3">Logo</h3>
-          </div>
-          <div>
-            <button className="navbtn" onClick={logout}>
-              로그아웃
-            </button>
-            <button className="navbtn" onClick={mypage}>
-              마이페이지
-            </button>
-          </div>
-        </div>
+        <Navbar />
         {isModalOpen && (
           <Modal onClickToggleModal={onClickToggleModal}>
             <h3>주의사항</h3>

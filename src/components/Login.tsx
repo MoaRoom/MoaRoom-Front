@@ -1,13 +1,24 @@
 import React, { FC, useState } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../style/home.css";
 import axios from "axios";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useNavigate } from "react-router";
+import Navbar from "./Navbar";
 const Login: FC = (): JSX.Element => {
   const navigate = useNavigate();
+  const [loginInfo, setLoginInfo] = useState({
+    id: "",
+    password: ""
+  })
+  const {id, password} = loginInfo;
+
+  const onChangeInput = (e: any) => {
+    const { name, value } = e.target;
+    setLoginInfo({ ...loginInfo, [name]: value });
+  };
+
   const {
     register,
     handleSubmit,
@@ -29,8 +40,10 @@ const Login: FC = (): JSX.Element => {
     axios
       .post("http://moaroom-back.duckdns.org:8080/login", params)
       .then(function(response) {
-        //   IF EMAIL ALREADY EXISTS
-        if (response.data.success === false) {
+        if (response.data === "") {
+          alert("로그인 정보가 없습니다. 다시 로그인 해주세요.")
+          setLoginInfo({id:"", password:""})
+          console.log(response)
           toast.error(response.data.error, {
             position: "top-right",
             autoClose: 3000,
@@ -54,8 +67,9 @@ const Login: FC = (): JSX.Element => {
             toastId: "my_toast",
           });
           localStorage.setItem("auth", response.data.token);
+          localStorage.setItem("isLogin", "True")
           setTimeout(() => {
-            navigate("/", {
+            navigate("/lecture", {
               state: { user_id: response.data },
             });
           }, 3000);
@@ -68,24 +82,7 @@ const Login: FC = (): JSX.Element => {
   return (
     <>
       <div className="background">
-        <div
-          className="navbar"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <div>
-            <h3 className="m-3">Logo</h3>
-          </div>
-          <div>
-            <button type="submit" className="navbtn" onClick={login}>
-              로그인
-            </button>
-          </div>
-        </div>
+        <Navbar/>
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"
@@ -107,6 +104,8 @@ const Login: FC = (): JSX.Element => {
                         {...register("id", {
                           required: "id is required!",
                         })}
+                        value={id}
+                        onChange={onChangeInput}
                       />
                       {errors.id && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
@@ -123,6 +122,8 @@ const Login: FC = (): JSX.Element => {
                         {...register("password", {
                           required: "Password is required!",
                         })}
+                        value={password}
+                        onChange={onChangeInput}
                       />
                       {errors.password && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
@@ -135,14 +136,12 @@ const Login: FC = (): JSX.Element => {
                     >
                       <button
                         className="btn btn-outline-primary text-center shadow-none mb-3"
-                        // type="submit"
-                        onClick={login}
+                        type="submit"
                       >
                         로그인
                       </button>
                       <button
                         className="btn btn-outline-primary text-center shadow-none mb-3"
-                        // type="submit"
                         onClick={goSignUp}
                       >
                         회원가입

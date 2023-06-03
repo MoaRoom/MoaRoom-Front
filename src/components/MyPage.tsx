@@ -1,31 +1,20 @@
 import React, { FC, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../style/home.css";
 import LectureList from "../props/LectureList";
 import Modal from "../props/Modal";
+import Navbar from "./Navbar";
 const MyPage: FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm();
   // nav bar login btn
   const navigate = useNavigate();
-  const logout = () => {
-    navigate("/", {
-      state: {},
-    });
-  };
-  const mypage = () => {
-    navigate("/mypage", {
-      state: {},
-    });
-  };
   const updateProfile = () => {};
   const deleteProfile = () => {};
 
@@ -89,27 +78,7 @@ const MyPage: FC = () => {
   return (
     <>
       <div className="background">
-        <div
-          className="navbar"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <div>
-            <h3 className="m-3">Logo</h3>
-          </div>
-          <div>
-            <button className="navbtn" onClick={logout}>
-              로그아웃
-            </button>
-            <button className="navbtn" onClick={mypage}>
-              마이페이지
-            </button>
-          </div>
-        </div>
+        <Navbar />
         {iscreateModalOpen && (
           <Modal onClickToggleModal={onClickTogglecreateModal}>
             <form autoComplete="off" onSubmit={handleSubmit(createLecture)}>

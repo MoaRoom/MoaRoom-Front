@@ -1,14 +1,45 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../style/home.css";
 import Modal from "../props/Modal";
 import Navbar from "./Navbar";
+import axios from "axios";
+import { stringify } from "querystring";
+
 const Assignment: FC = () => {
+  // data interface(now deprecated) TODO: apply
+  interface UrlResp {
+    id: string;
+    lectureId: string;
+    containerAddress: string;
+    apiEndpoint: string;
+  }
+
   // create modal
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   const onClickToggleModal = useCallback(() => {
     setModalOpen(!isModalOpen);
   }, [isModalOpen]);
+
+  // 제출 페이지와 연동
+  // const location = useLocation();
+  // const user_id = location.state.user_id;
+  // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
+  const user_id = "c341d553-ab17-42a7-a5a7-a5b36a038467";
+
+  const [url, setUrl] = useState<UrlResp | string>("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get("http://moaroom-back.duckdns.org:8080/url/" + user_id)
+      .then((response) => {
+        setUrl(response.data.containerAddress);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <>
@@ -27,21 +58,24 @@ const Assignment: FC = () => {
             </ul>
           </Modal>
         )}
-        <iframe
-          id="terminal"
-          title="terminal iframe"
-          allow="fullscreen"
-          width="100%"
-          height="700"
-          src="http://localhost:8888"
-        />
+        {loading && url ? (
+          <div>Loading...</div>
+        ) : (
+          <iframe
+            id="container"
+            title="container iframe"
+            allow="fullscreen"
+            width="100%"
+            height="700"
+            src={url.toString()}
+          />
+        )}
       </div>
-      <button onClick={onClickToggleModal}>
-        <img
-          className="floating-button"
-          src="https://cdn.icon-icons.com/icons2/3298/PNG/512/magnifying_glass_search_icon_208685.png"
-        />
-      </button>
+      <img
+        onClick={onClickToggleModal}
+        className="floating-button"
+        src="https://cdn.icon-icons.com/icons2/3298/PNG/512/magnifying_glass_search_icon_208685.png"
+      />
     </>
   );
 };

@@ -71,7 +71,11 @@ const LecturePage: FC = () => {
             lectureList.map((lecture) => (
               <Lecture lecture={lecture} isProfessor={isProfessor}></Lecture>
             ))}
-          <Paging />
+          {
+            lectureList != null && (
+              <Paging />
+            )
+          }
         </div>
       </div>
     </>

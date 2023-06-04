@@ -14,7 +14,7 @@ const Paging = () => {
       activePage={page}
       itemsCountPerPage={10}
       totalItemsCount={50}
-      pageRangeDisplayed={5}
+      pageRangeDisplayed={1}
       prevPageText={"‹"}
       nextPageText={"›"}
       onChange={handlePageChange}

@@ -200,7 +200,11 @@ const AssignmentPage: FC = () => {
               </button>
             </>
           )}
-          <Paging />
+          {
+            assignmentPropsList == null &&(
+              <Paging />
+            )
+          }
         </div>
       </div>
     </>

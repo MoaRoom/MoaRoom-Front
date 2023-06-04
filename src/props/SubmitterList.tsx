@@ -20,9 +20,10 @@ const SubmitterList = ({
   console.log("submittersPropsList:" + submittersPropsList);
   return (
     <div>
-      {submittersPropsList.map((submittersProps) => (
-        <Submitter submittersProps={submittersProps}></Submitter>
-      ))}
+      {submittersPropsList &&
+        submittersPropsList.map((submittersProps) => (
+          <Submitter submittersProps={submittersProps}></Submitter>
+        ))}
     </div>
   );
 };

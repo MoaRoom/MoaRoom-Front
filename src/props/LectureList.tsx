@@ -29,10 +29,11 @@ const LectureList = (data: any) => {
   ]);
   return (
     <div>
-      {lectureList.map((lecture) => (
-        <div>강의 목록 - 마이페이지 적용시 수정 필요</div>
-        //<Lecture lecture={lecture}></Lecture>
-      ))}
+      {lectureList &&
+        lectureList.map((lecture) => (
+          <div>강의 목록 - 마이페이지 적용시 수정 필요</div>
+          //<Lecture lecture={lecture}></Lecture>
+        ))}
     </div>
   );
 };

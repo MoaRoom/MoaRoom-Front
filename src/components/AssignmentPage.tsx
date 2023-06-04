@@ -15,6 +15,15 @@ export type AssignmentType = {
   step: number; // 0:진행중, 1:진행대기중, 2:채점중, 3:완료
   score: number;
 };
+export type AssignmentPropType = {
+  user_id: string;
+  isProfessor: boolean;
+  lecture_id: string;
+  assignment_id: string;
+  title: string;
+  step: number; // 0:진행중, 1:진행대기중, 2:채점중, 3:완료
+  score: number;
+};
 
 const AssignmentPage: FC = () => {
   const {
@@ -27,7 +36,11 @@ const AssignmentPage: FC = () => {
   const location = useLocation();
   const user_id = location.state.user_id;
   const isProfessor = location.state.isProfessor;
+  const lecture_id = location.state.lecture_id;
   const [assignmentList, setAssignmentList] = useState<AssignmentType[]>([]);
+  const [assignmentPropsList, setAssignmentPropsList] = useState<
+    AssignmentPropType[]
+  >([]);
   // delete modal
   const [isdeleteModalOpen, setdeleteModalOpen] = useState<boolean>(false);
 
@@ -36,7 +49,7 @@ const AssignmentPage: FC = () => {
   }, [isdeleteModalOpen]);
   const newAssignment = () => {
     navigate("/newassignment", {
-      state: { user_id: user_id, lecture_id: location.state.lecture_id },
+      state: { user_id: user_id, lecture_id: lecture_id },
     });
   };
   const deleteAssignment = (data: any) => {
@@ -58,11 +71,40 @@ const AssignmentPage: FC = () => {
   };
 
   useEffect(() => {
+    var tmpList: AssignmentPropType[] = [];
     axios
       .get("http://moaroom-back.duckdns.org:8080/assignment/all/" + user_id)
       .then((response) => {
-        console.log(response.data);
-        setAssignmentList(response.data);
+        if (isProfessor) {
+          for (let i = 0; i < response.data.length; i++) {
+            tmpList.push({
+              user_id: user_id,
+              isProfessor: isProfessor,
+              lecture_id: response.data[i].lecture_id,
+              assignment_id: response.data[i].assignment_id,
+              title: response.data[i].title,
+              step: response.data[i].step,
+              score: response.data[i].score,
+            } as AssignmentPropType);
+          }
+          setAssignmentPropsList(tmpList);
+        } else {
+          // 학생 것만 보이게
+          for (let i = 0; i < response.data.length; i++) {
+            if (response.data[i].id == user_id) {
+              tmpList.push({
+                user_id: user_id,
+                isProfessor: isProfessor,
+                lecture_id: response.data[i].lecture_id,
+                assignment_id: response.data[i].assignment_id,
+                title: response.data[i].title,
+                step: response.data[i].step,
+                score: response.data[i].score,
+              } as AssignmentPropType);
+            }
+          }
+          setAssignmentPropsList(tmpList);
+        }
       });
   }, []);
 
@@ -94,7 +136,7 @@ const AssignmentPage: FC = () => {
                   className="btn btn-outline-danger text-center shadow-none mb-3"
                   type="submit"
                 >
-                  강의 삭제
+                  과제 삭제
                 </button>
               </div>
             </form>
@@ -146,8 +188,8 @@ const AssignmentPage: FC = () => {
               </div>
             </div>
           </div>
-          {assignmentList &&
-            assignmentList.map((assignment) => (
+          {assignmentPropsList &&
+            assignmentPropsList.map((assignment) => (
               <Assignment assignment={assignment} />
             ))}
           {isProfessor == true && (

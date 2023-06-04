@@ -55,12 +55,11 @@ const SignUp: FC = () => {
           progress: 0,
           toastId: "my_toast",
         });
-        reset();
         setTimeout(() => {
           navigate("/login", {
             state: { user_id: user_id, isProfessor: isProfessor },
           });
-        }, 3000);
+        }, 1000);
       })
       .catch(function(error) {
         console.log(error);
@@ -177,7 +176,7 @@ const SignUp: FC = () => {
                         <p>
                           <input
                             type="radio"
-                            value="1"
+                            value="2"
                             id="professor"
                             onChange={radioHandler}
                           />

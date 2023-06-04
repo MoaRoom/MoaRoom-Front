@@ -13,10 +13,16 @@ export type LectureType = {
 };
 
 const MyPageLectureList = ({ lectureList }: { lectureList: LectureType[] }) => {
+  const filteredLectureList: LectureType[] = [];
+  for (let i = 0; i < lectureList.length; i++) {
+    if (lectureList[i].enroll == true || lectureList[i].enroll == null) {
+      filteredLectureList.push(lectureList[i]);
+    }
+  }
   return (
     <div>
-      {lectureList &&
-        lectureList.map((lecture) => (
+      {filteredLectureList &&
+        filteredLectureList.map((lecture) => (
           <MyPageLecture lecture={lecture}></MyPageLecture>
         ))}
     </div>

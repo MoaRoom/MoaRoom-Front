@@ -77,7 +77,8 @@ const AssignmentPage: FC = () => {
     axios
       .get("http://moaroom-back.duckdns.org:8080/assignment/all/" + user_id)
       .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
+        for (let i = 0; i < response.data.length; i++) {
+          if (lecture_id == response.data[i].lecture_id) {
             tmpList.push({
               user_id: user_id,
               isProfessor: isProfessor,
@@ -89,6 +90,7 @@ const AssignmentPage: FC = () => {
             } as AssignmentPropType);
           }
           setAssignmentPropsList(tmpList);
+        }
       });
   }, []);
 

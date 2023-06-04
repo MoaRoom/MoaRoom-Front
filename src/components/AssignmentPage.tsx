@@ -77,7 +77,6 @@ const AssignmentPage: FC = () => {
     axios
       .get("http://moaroom-back.duckdns.org:8080/assignment/all/" + user_id)
       .then((response) => {
-        if (isProfessor) {
           for (let i = 0; i < response.data.length; i++) {
             tmpList.push({
               user_id: user_id,
@@ -90,23 +89,6 @@ const AssignmentPage: FC = () => {
             } as AssignmentPropType);
           }
           setAssignmentPropsList(tmpList);
-        } else {
-          // 학생 것만 보이게
-          for (let i = 0; i < response.data.length; i++) {
-            if (response.data[i].id == user_id) {
-              tmpList.push({
-                user_id: user_id,
-                isProfessor: isProfessor,
-                lecture_id: response.data[i].lecture_id,
-                assignment_id: response.data[i].assignment_id,
-                title: response.data[i].title,
-                step: response.data[i].step,
-                score: response.data[i].score,
-              } as AssignmentPropType);
-            }
-          }
-          setAssignmentPropsList(tmpList);
-        }
       });
   }, []);
 

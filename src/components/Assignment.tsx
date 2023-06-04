@@ -23,10 +23,9 @@ const Assignment: FC = () => {
   }, [isModalOpen]);
 
   // 제출 페이지와 연동
-  // const location = useLocation();
-  // const user_id = location.state.user_id;
   // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
-  const user_id = "18458100-e4cc-4a49-ad36-2a8c565446ed";
+  const location = useLocation();
+  const user_id = location.state.user_id;
 
   const [url, setUrl] = useState<UrlResp | string>("");
 

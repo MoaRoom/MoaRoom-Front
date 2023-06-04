@@ -176,7 +176,7 @@ const SignUp: FC = () => {
                         <p>
                           <input
                             type="radio"
-                            value="1"
+                            value="2"
                             id="professor"
                             onChange={radioHandler}
                           />

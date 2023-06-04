@@ -8,13 +8,15 @@ const Submit: FC = () => {
   // SubmitterList
 
   // 제출 페이지와 연동
-  // const location_user = useLocation();
-  // const user_id = location_user.state.user_id; // professor
-  // const location_asgn = useLocation();
-  // const assignment_id = location_asgn.state.assignment_id;
+  // const location = useLocation();
+  // const user_id = location.state.user_id; // professor
+  // const assignment_id = location.state.assignment_id;
+  // const isProfessor = location.state.isProfessor;
   // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
-  const user_id = "31049273-68e7-4f2d-bb22-f193a955a3aa"; // professor
-  const assignment_id = "24dc673b-9af9-492d-bac9-3d34168f3cf9";
+  const user_id = "18458100-e4cc-4a49-ad36-2a8c565446ed"; // professor?
+  const assignment_id = "710f3239-0eea-4f5b-ad9c-58e1c923ab85";
+  const isProfessor = true;
+
   const [submittersPropsList, setSubmittersPropsList] = useState<
     SubmitterPropType[]
   >([]);
@@ -24,17 +26,36 @@ const Submit: FC = () => {
     axios
       .get("http://moaroom-back.duckdns.org:8080/step/" + assignment_id)
       .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          tmpList.push({
-            id: response.data[i].id,
-            name: response.data[i].name,
-            step: response.data[i].step,
-            score: response.data[i].score,
-            user_id: user_id,
-            assignment_id: assignment_id,
-          } as SubmitterPropType);
+        if (isProfessor) {
+          for (let i = 0; i < response.data.length; i++) {
+            tmpList.push({
+              id: response.data[i].id,
+              name: response.data[i].name,
+              step: response.data[i].step,
+              score: response.data[i].score,
+              user_id: user_id,
+              assignment_id: assignment_id,
+              isProfessor: isProfessor,
+            } as SubmitterPropType);
+          }
+          setSubmittersPropsList(tmpList);
+        } else {
+          // 학생 것만 보이게
+          for (let i = 0; i < response.data.length; i++) {
+            if (response.data[i].id == user_id) {
+              tmpList.push({
+                id: response.data[i].id,
+                name: response.data[i].name,
+                step: response.data[i].step,
+                score: response.data[i].score,
+                user_id: user_id,
+                assignment_id: assignment_id,
+                isProfessor: isProfessor,
+              } as SubmitterPropType);
+            }
+          }
+          setSubmittersPropsList(tmpList);
         }
-        setSubmittersPropsList(tmpList);
       });
   }, []);
 

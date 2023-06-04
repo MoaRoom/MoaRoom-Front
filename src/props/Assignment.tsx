@@ -29,6 +29,16 @@ const Assignment = ({ assignment }: AssignmentProps) => {
       },
     });
   };
+  const goAssignment = () => {
+    console.log("navigate with" + user_id + assignment_id + isProfessor);
+    navigate("/assignment", {
+      state: {
+        user_id: user_id,
+        assignment_id: assignment_id,
+        isProfessor: isProfessor,
+      },
+    });
+  };
   return (
     <div className="card mb-2 mt-2 rounded">
       <div className="card-body">
@@ -51,14 +61,23 @@ const Assignment = ({ assignment }: AssignmentProps) => {
           {/* 채점 완료인 경우 - 학생 */}
           {step == 3 && score != null && (
             <button
-              onClick={() => goScore()}
+              onClick={() => goAssignment()}
               className="btn btn-outline-primary text-center shadow-none mb-3 submit-btn"
             >
               채점 완료: {score}점/100점
             </button>
           )}
-          {/* 진행중 */}
-          {step == 0 && (
+          {/* 진행중 - 학생 */}
+          {step == 0 && isProfessor == false &&(
+            <button
+              onClick={() => goAssignment()}
+              className="btn btn-outline-success text-center shadow-none mb-3 submit-btn"
+            >
+              진행중
+            </button>
+          )}
+          {/* 진행중 - 교수 */}
+          {step == 0 && isProfessor == true &&(
             <button
               onClick={() => goScore()}
               className="btn btn-outline-success text-center shadow-none mb-3 submit-btn"
@@ -66,10 +85,18 @@ const Assignment = ({ assignment }: AssignmentProps) => {
               진행중
             </button>
           )}
-          {/* 채점중 */}
-          {step == 2 && (
+          {/* 채점중 - 교수 */}
+          {step == 2 && isProfessor == true &&(
             <button
               onClick={() => goScore()}
+              className="btn btn-outline-warning text-center shadow-none mb-3 submit-btn"
+            >
+              채점중
+            </button>
+          )}
+          {/* 채점중 - 학생 */}
+          {step == 2 && isProfessor == false && (
+            <button
               className="btn btn-outline-warning text-center shadow-none mb-3 submit-btn"
             >
               채점중
@@ -78,7 +105,6 @@ const Assignment = ({ assignment }: AssignmentProps) => {
           {/* 진행 대기중 */}
           {step == 1 && (
             <button
-              onClick={() => goScore()}
               className="btn btn-outline-warning text-center shadow-none mb-3 submit-btn"
             >
               진행 대기중

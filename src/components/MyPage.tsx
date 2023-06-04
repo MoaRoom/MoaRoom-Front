@@ -25,10 +25,10 @@ const MyPage: FC = () => {
     classes: string[];
   };
 
-  // 로그인? 페이지와 연동
   const location = useLocation();
   const user_id = location.state.user_id; // professor or student
   const isProfessor = location.state.isProfessor;
+
 
   // create modal
   const [iscreateModalOpen, setcreateModalOpen] = useState<boolean>(false);

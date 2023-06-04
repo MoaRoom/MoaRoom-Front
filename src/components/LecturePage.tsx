@@ -16,20 +16,20 @@ export type LectureType = {
 
 const LecturePage: FC = () => {
     const location = useLocation();
-    const [lectureList, setLectureList] = useState<LectureType[]>([]);
-    const [isProfessor, setIsProfessor] = useState<Boolean>(false);
     const user_id = location.state.user_id;
+    const [lectureList, setLectureList] = useState<LectureType[]>([]);
+    const [isProfessor, setIsProfessor] = useState<Boolean>(true);
       useEffect(() => {
         axios
           .get("http://moaroom-back.duckdns.org:8080/lecture/all/"+user_id)
           .then((response) => {
             console.log(response.data)
             setLectureList(response.data)
-            if(lectureList.length !=0 && lectureList[0].enroll === null){
-              setIsProfessor(true);
+            if(response.data.length !=0 && response.data[0].enroll != null){
+              setIsProfessor(false);
             }
           });
-      }, []);
+      },[isProfessor]);
       return(
         <>
           <div className="background">
@@ -55,7 +55,7 @@ const LecturePage: FC = () => {
                   <p className="lecture-text">분반</p>
               </div>
               {lectureList.map((lecture) => (
-                <Lecture lecture={lecture}></Lecture>
+                <Lecture lecture={lecture} isProfessor={isProfessor}></Lecture>
               ))}
               <Paging />
             </div>

@@ -1,13 +1,20 @@
-import React, { FC, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { FC, useState, useCallback, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import "../style/LecturePage.css";
 import Paging from "../components/Paging";
-import AssignmentList from "../props/AssignmentList";
+import Assignment from "../props/Assignment";
 import AssignmentModal from "../props/AssignmentModal";
 import Navbar from "./Navbar";
 
+export type AssignmentType = {
+  lecture_id: string;
+  assignment_id: string;
+  title: string;
+  step: number; // 0:진행중, 1:진행대기중, 2:채점중, 3:완료
+  score: number;
+};
 
 const AssignmentPage: FC = () => {
     const {
@@ -17,6 +24,10 @@ const AssignmentPage: FC = () => {
         formState: { errors },
       } = useForm();
     const navigate = useNavigate();
+    const location = useLocation();
+    const user_id = location.state.user_id;
+    const isProfessor = location.state.isProfessor;
+    const [assignmentList, setAssignmentList] = useState<AssignmentType[]>([]);
       // delete modal
     const [isdeleteModalOpen, setdeleteModalOpen] = useState<boolean>(false);
 
@@ -25,30 +36,33 @@ const AssignmentPage: FC = () => {
     }, [isdeleteModalOpen]);
       const newAssignment = () => {
         navigate("/newassignment", {
-            state: {},
+            state: {user_id: user_id, lecture_id: location.state.lecture_id},
           });
       };
       const deleteAssignment = (data: any) => {
-        let params = {
-          title: data.title,
-          room: data.room,
-        };
-        console.log(params);
-        // TODO 서버 나오면 디버깅 필요
+        const title = data.title;
         axios
-          .post("http://localhost:3000/api/deleteAssignment", params)
+          .delete("http://moaroom-back.duckdns.org:8080/assignment/"+title)
           .then(function(response) {
-            reset();
-            setTimeout(() => {
-              navigate("/login", {
-                state: {},
-              });
-            }, 3000);
+            if(response.data == "삭제 성공"){
+              alert("과제가 삭제되었습니다.")
+            } else{
+              alert("과제가 삭제되지 않았습니다. 과제명을 올바르게 입력했는지 확인해주세요.")
+            }
           })
           .catch(function(error) {
             console.log(error);
           });
       };
+
+      useEffect(() => {
+        axios
+          .get("http://moaroom-back.duckdns.org:8080/assignment/all/"+user_id)
+          .then((response) => {
+            console.log(response.data)
+            setAssignmentList(response.data)
+          });
+      }, []);
     
     return(
         <>
@@ -76,8 +90,7 @@ const AssignmentPage: FC = () => {
                     <div className="mt-4 mb-3 text-center ">
                       <button
                         className="btn btn-outline-danger text-center shadow-none mb-3"
-                        // type="submit"
-                        onClick={deleteAssignment}
+                        type="submit"
                       >
                         강의 삭제
                       </button>
@@ -95,9 +108,9 @@ const AssignmentPage: FC = () => {
                               background: "#E2EDFF"
                           }}>
                   <div className="card-body">
-                  <p>강의명: 프로그래밍 입문</p>
-                  <p>담당 교수: 이종우</p>
-                  <p>분반: 1</p>
+                  <p>강의명: {location.state.lecture_title}</p>
+                  <p>담당 교수: {location.state.professor_name}</p>
+                  <p>분반: {location.state.room}</p>
                   </div>
               </div>
               {/* search form */}
@@ -121,20 +134,25 @@ const AssignmentPage: FC = () => {
                     </div>
                   </div>
                 </div>
-                <AssignmentList />
-                <button 
-                  type="submit"
-                  onClick={onClickToggledeleteModal}
-                  style={{
-                      float:"right"}}>
-                  과제 삭제
-                </button>
-                <button 
-                  type="submit"
-                  onClick={newAssignment}
-                  style={{float:"right"}}>
-                    과제 추가
-                </button>
+                {assignmentList.map((assignment) => (
+                  <Assignment assignment={assignment} />
+                ))}
+                {isProfessor == true && (
+                    <>
+                    <button 
+                      type="submit"
+                      onClick={onClickToggledeleteModal}
+                      style={{float:"right"}}>
+                      과제 삭제
+                    </button>
+                    <button 
+                      type="submit"
+                      onClick={newAssignment}
+                      style={{float:"right"}}>
+                        과제 추가
+                    </button>
+                    </>
+                  )}
                 <Paging />
               </div>
             </div>

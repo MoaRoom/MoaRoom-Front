@@ -1,16 +1,15 @@
 import React from "react";
-import { AssignmentType } from "./AssignmentList";
-import "../style/AssignmentPage.css";
+import { AssignmentType } from "../components/AssignmentPage";
 import { useNavigate } from "react-router-dom";
+import "../style/AssignmentPage.css";
 
-type SubmitterProps = {
+type AssignmentProps = {
   // 부모 컴포넌트에 import 해온 타입을 재사용
-  submitter: AssignmentType;
+  assignment: AssignmentType;
 };
 
-const Assignment = ({ submitter }: SubmitterProps) => {
-  const { assignment, step, score } = submitter;
-  const navigate = useNavigate();
+const Assignment = ({ assignment }: AssignmentProps) => {
+  const { lecture_id, assignment_id, title, step, score } = assignment;
   return (
     <div className="card mb-2 mt-2 rounded">
       <div className="card-body">
@@ -20,9 +19,17 @@ const Assignment = ({ submitter }: SubmitterProps) => {
             justifyContent: "space-between",
           }}
         >
-          <p className="lecture-text">{assignment}</p>
-          {/* 채점 완료인 경우 */}
-          {step == 3 && (
+          <p className="lecture-text">{title}</p>
+          {/* 채점 완료인 경우 - 교수 */}
+          {(step == 3 && score == null) && (
+            <button
+              className="btn btn-outline-primary text-center shadow-none mb-3 submit-btn"
+            >
+              완료
+            </button>
+          )}
+          {/* 채점 완료인 경우 - 학생 */}
+          {(step == 3 && score != null) && (
             <button
               className="btn btn-outline-primary text-center shadow-none mb-3 submit-btn"
             >

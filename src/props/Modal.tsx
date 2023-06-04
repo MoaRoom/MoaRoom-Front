@@ -11,7 +11,14 @@ function Modal({
 }: PropsWithChildren<ModalDefaultType>) {
   return (
     <div>
-      <dialog className="dialog-box">{children}</dialog>
+      <dialog
+        className="dialog-box"
+        style={{
+          height: "auto",
+        }}
+      >
+        {children}
+      </dialog>
       <div
         className="backdrop"
         onClick={(e: React.MouseEvent) => {

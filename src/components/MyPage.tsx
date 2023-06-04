@@ -29,7 +29,6 @@ const MyPage: FC = () => {
   const user_id = location.state.user_id; // professor or student
   const isProfessor = location.state.isProfessor;
 
-
   // create modal
   const [iscreateModalOpen, setcreateModalOpen] = useState<boolean>(false);
 

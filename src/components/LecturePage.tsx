@@ -24,13 +24,12 @@ const LecturePage: FC = () => {
     axios
       .get("http://moaroom-back.duckdns.org:8080/lecture/all/" + user_id)
       .then((response) => {
-        console.log(response.data);
         setLectureList(response.data);
         if (response.data.length != 0 && response.data[0].enroll != null) {
           setIsProfessor(false);
         }
       });
-  }, [isProfessor]);
+  }, [lectureList, isProfessor]);
   return (
     <>
       <div className="background">

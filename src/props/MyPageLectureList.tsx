@@ -15,9 +15,10 @@ export type LectureType = {
 const MyPageLectureList = ({ lectureList }: { lectureList: LectureType[] }) => {
   return (
     <div>
-      {lectureList.map((lecture) => (
-        <MyPageLecture lecture={lecture}></MyPageLecture>
-      ))}
+      {lectureList &&
+        lectureList.map((lecture) => (
+          <MyPageLecture lecture={lecture}></MyPageLecture>
+        ))}
     </div>
   );
 };

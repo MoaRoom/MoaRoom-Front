@@ -46,12 +46,14 @@ const Score: FC = () => {
   }
 
   // 제출 페이지와 연동
-  // const location = useLocation();
-  // const user_id = location.state.user_id;
-  // const location = useLocation();
-  // const assignment_id = location.state.assignment_id;
-  const user_id = "39194bb0-14c4-4eb9-813b-7ee984359d79"; // student
-  const assignment_id = "59485a6b-cd14-4d96-adac-59a781a5b149";
+  const location_user = useLocation();
+  const student_id = location_user.state.student_id; //student
+  const location_asgn = useLocation();
+  const assignment_id = location_asgn.state.assignment_id;
+  const location_pf = useLocation();
+  const professor_id = location_pf.state.professor_id;
+  // const user_id = "39194bb0-14c4-4eb9-813b-7ee984359d79"; // student
+  // const assignment_id = "59485a6b-cd14-4d96-adac-59a781a5b149";
 
   // nav bar login btn
   const navigate = useNavigate();
@@ -84,7 +86,6 @@ const Score: FC = () => {
   const [lectitle, setLectitle] = useState<string>("");
   const [room, setRoom] = useState<string>("");
   const [asgntitle, setAsgntitle] = useState<string>("");
-  const [pid, setPid] = useState<string>("");
   const [lid, setLid] = useState<string>("");
   const [pname, setPname] = useState<string>("");
   const [apiEP, setApiEP] = useState<string>("");
@@ -92,7 +93,7 @@ const Score: FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://moaroom-back.duckdns.org:8080/user/" + user_id)
+      .get("http://moaroom-back.duckdns.org:8080/user/" + student_id)
       .then((response) => {
         // setUser(JSON.parse(JSON.stringify(response.data)));
         setName(JSON.parse(JSON.stringify(response.data)).name);
@@ -101,15 +102,15 @@ const Score: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (pid != "") {
+    if (professor_id != "") {
       axios
-        .get("http://moaroom-back.duckdns.org:8080/url/" + pid)
+        .get("http://moaroom-back.duckdns.org:8080/url/" + professor_id)
         .then((response) => {
           setUrl(response.data);
           setApiEP(response.data.apiEndpoint);
         });
     }
-  }, [pid]);
+  }, [professor_id]);
 
   useEffect(() => {
     if (apiEP != "") {
@@ -117,7 +118,7 @@ const Score: FC = () => {
         .get(
           apiEP +
             "/assignment/?id=" +
-            user_id +
+            student_id +
             "&assignment_id=" +
             assignment_id
         )
@@ -137,13 +138,12 @@ const Score: FC = () => {
   }, []);
   useEffect(() => {
     axios
-      .get("http://moaroom-back.duckdns.org:8080/lecture/info/" + assignment_id) // TODO
+      .get("http://moaroom-back.duckdns.org:8080/lecture/info/" + assignment_id)
       .then((response) => {
         setLecture(response.data);
         setLectitle(response.data.title);
         setRoom(response.data.room);
         setPname(response.data.professor_name);
-        setPid(response.data.professor_id);
         setLid(response.data.lecture_id);
       });
   }, []);
@@ -173,11 +173,10 @@ const Score: FC = () => {
     let params = {
       lecture_id: lid,
       assignment_id: assignment_id,
-      user_id: user_id,
+      user_id: student_id,
       score: data.score,
     };
     console.log(params);
-    // TODO 서버 나오면 디버깅 필요
     axios
       .post("http://moaroom-back.duckdns.org:8080/assignment/score", params)
       .then(function(response) {

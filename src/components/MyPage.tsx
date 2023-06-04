@@ -128,7 +128,7 @@ const MyPage: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         {iscreateModalOpen && (
           <Modal onClickToggleModal={onClickTogglecreateModal}>
             <form autoComplete="off" onSubmit={handleSubmit(createLecture)}>

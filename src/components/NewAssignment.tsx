@@ -16,10 +16,16 @@ const newAssignment: FC = () => {
     reset,
     formState: { errors },
   } = useForm();
+  const [user_id, setUserId] = useState<string>("");
+  const [isProfessor, setIsProfessor] = useState<boolean>(false);
+
   // The selected role
   const [selectedRole, setSelectedRole] = useState<String>();
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedRole(event.target.value);
+    if (selectedRole == "2") {
+      setIsProfessor(true);
+    }
   };
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,6 +40,8 @@ const newAssignment: FC = () => {
       due_date: dueDate,
       description: data.description,
     };
+    setUserId(location.state.user_id);
+
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
     axios
@@ -41,7 +49,10 @@ const newAssignment: FC = () => {
       .then(function(response) {
         if (response.data == "새로운 과제 등록 완료") {
           navigate("/lecture", {
-            state: { user_id: location.state.user_id },
+            state: {
+              user_id: location.state.user_id,
+              isProfessor: isProfessor,
+            },
           });
         }
         toast.success(response.data.message, {
@@ -63,7 +74,7 @@ const newAssignment: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"

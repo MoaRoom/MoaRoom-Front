@@ -60,7 +60,7 @@ const Submit: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         <div className="card mb-6 mt-3 profile-submitter-box">
           <div
             style={{

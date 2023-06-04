@@ -7,6 +7,7 @@ import Paging from "../components/Paging";
 import Assignment from "../props/Assignment";
 import AssignmentModal from "../props/AssignmentModal";
 import Navbar from "./Navbar";
+import { navPropsType } from "./Navbar";
 
 export type AssignmentType = {
   lecture_id: string;
@@ -41,6 +42,7 @@ const AssignmentPage: FC = () => {
   const [assignmentPropsList, setAssignmentPropsList] = useState<
     AssignmentPropType[]
   >([]);
+
   // delete modal
   const [isdeleteModalOpen, setdeleteModalOpen] = useState<boolean>(false);
 
@@ -111,7 +113,11 @@ const AssignmentPage: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar
+          navProps={
+            { user_id: user_id, isProfessor: isProfessor } as navPropsType
+          }
+        />
         {isdeleteModalOpen && (
           <AssignmentModal onClickToggleModal={onClickToggledeleteModal}>
             <form autoComplete="off" onSubmit={handleSubmit(deleteAssignment)}>

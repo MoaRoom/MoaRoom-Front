@@ -158,7 +158,7 @@ const Score: FC = () => {
         reset();
         setTimeout(() => {
           navigate("/login", {
-            state: {},
+            state: { user_id: professor_id, isProfessor: isProfessor },
           });
         }, 3000);
         setautoModalOpen(!isautoModalOpen);
@@ -189,7 +189,9 @@ const Score: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar
+          navProps={{ user_id: professor_id, isProfessor: isProfessor }} // professor_id가 user_id로써 넘어옴(용도에 맞게)
+        />
         {isautoModalOpen && (
           <Modal onClickToggleModal={onClickToggleautoModal}>
             <form autoComplete="off" onSubmit={handleSubmit(autoScore)}>

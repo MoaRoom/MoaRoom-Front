@@ -1,4 +1,6 @@
 import React, { FC, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -7,9 +9,7 @@ import "../style/AssignmentPage.css";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import Navbar from "./Navbar";
-const SignUp: FC = () => {
-    const [startDate, setStartDate] = useState<Date|null>(new Date());
-    const [dueDate, setDueDate] = useState<Date|null>(null);
+const newAssignment: FC = () => {
   const {
     register,
     handleSubmit,
@@ -21,18 +21,30 @@ const SignUp: FC = () => {
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedRole(event.target.value);
   };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [startDate, setStartDate] = useState<Date|null>(new Date());
+  const [dueDate, setDueDate] = useState<Date|null>(null);
   const submitData = (data: any) => {
     let params = {
-        title: data.title,
-      start_date: data.start_date,
-      due_date: data.due_date,
+      lecture_id: location.state.lecture_id,
+      user_id: location.state.user_id,
+      title: data.title,
+      start_date: startDate,
+      due_date: dueDate,
       description: data.description,
     };
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
     axios
-      .post("http://localhost:3000/api/newAssignment", params)
+      .post("http://moaroom-back.duckdns.org:8080/assignment/new", params)
       .then(function(response) {
+        console.log(response.data)
+        if (response.data == "새로운 과제 등록 완료"){
+            navigate("/lecture", {
+              state: { user_id:  location.state.user_id},
+            });
+        }
         toast.success(response.data.message, {
           position: "top-right",
           autoClose: 3000,
@@ -91,7 +103,12 @@ const SignUp: FC = () => {
                     </div>
                     <div className="">
                       <label className="form-label">오픈 예정일</label>
-                      <DatePicker selected={startDate} onChange={date => setStartDate(date)} dateFormat="yyyy-MM-dd" />
+                      <DatePicker selected={startDate} onChange={date => setStartDate(date)} 
+                        showTimeSelect
+                        timeFormat="HH:mm" //시간 포맷 
+                        timeIntervals={1}
+                        timeCaption="time"
+                        dateFormat="yyyy/MM/dd HH:mm" />
                       {errors.start_date && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
                           {/* {errors.start_date.message} */}
@@ -101,7 +118,12 @@ const SignUp: FC = () => {
                     </div>
                     <div className="">
                       <label className="form-label">마감일</label>
-                      <DatePicker selected={dueDate} onChange={date => setDueDate(date)} dateFormat="yyyy-MM-dd" />
+                      <DatePicker selected={dueDate} onChange={date => setDueDate(date)} 
+                        showTimeSelect
+                        timeFormat="HH:mm" //시간 포맷 
+                        timeIntervals={1}
+                        timeCaption="time"
+                        dateFormat="yyyy/MM/dd HH:mm" />
                       {errors.due_date && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
                           errors.due_date.message
@@ -129,7 +151,6 @@ const SignUp: FC = () => {
                       <button
                         className="btn btn-outline-primary text-center shadow-none mb-3"
                         type="submit"
-                        onClick={submitData}
                       >
                         생성하기
                       </button>
@@ -156,4 +177,4 @@ const SignUp: FC = () => {
     </>
   );
 };
-export default SignUp;
+export default newAssignment;

@@ -46,14 +46,11 @@ const Score: FC = () => {
   }
 
   // 제출 페이지와 연동
-  const location_user = useLocation();
-  const student_id = location_user.state.student_id; //student
-  const location_asgn = useLocation();
-  const assignment_id = location_asgn.state.assignment_id;
-  const location_pf = useLocation();
-  const professor_id = location_pf.state.professor_id;
-  // const user_id = "39194bb0-14c4-4eb9-813b-7ee984359d79"; // student
-  // const assignment_id = "59485a6b-cd14-4d96-adac-59a781a5b149";
+  const location = useLocation();
+  const student_id = location.state.student_id; //student
+  const assignment_id = location.state.assignment_id;
+  const professor_id = location.state.professor_id;
+  const isProfessor = location.state.isProfessor;
 
   // nav bar login btn
   const navigate = useNavigate();
@@ -276,20 +273,24 @@ const Score: FC = () => {
                   </div>
                 </div>
               </div>
-              <button
-                className="btn btn-outline-primary text-center shadow-none mb-3"
-                type="submit"
-                onClick={onClickToggleautoModal}
-              >
-                자동 채점
-              </button>
-              <button
-                className="btn btn-outline-info text-center shadow-none mb-3"
-                type="submit"
-                onClick={onClickTogglemanualModal}
-              >
-                수동 채점
-              </button>
+              {isProfessor && (
+                <button
+                  className="btn btn-outline-primary text-center shadow-none mb-3"
+                  type="submit"
+                  onClick={onClickToggleautoModal}
+                >
+                  자동 채점
+                </button>
+              )}
+              {isProfessor && (
+                <button
+                  className="btn btn-outline-info text-center shadow-none mb-3"
+                  type="submit"
+                  onClick={onClickTogglemanualModal}
+                >
+                  수동 채점
+                </button>
+              )}
             </div>
           </div>
         </div>

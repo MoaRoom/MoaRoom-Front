@@ -9,8 +9,9 @@ export type SubmitterPropType = {
   name: string;
   step: number; // 0:진행중, 1:진행대기중, 2:채점중, 3:완료
   score: number;
-  user_id: string; // professor
+  user_id: string;
   assignment_id: string;
+  isProfessor: boolean;
 };
 const SubmitterList = ({
   submittersPropsList,

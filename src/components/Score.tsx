@@ -154,7 +154,7 @@ const Score: FC = () => {
       room: data.room,
     };
     console.log(params);
-    // TODO 자동채점 기능 시작 전
+    // TODO: 자동채점 기능 구현 필요
     axios
       .post("http://localhost:3000/api/signup", params)
       .then(function(response) {
@@ -164,6 +164,7 @@ const Score: FC = () => {
             state: {},
           });
         }, 3000);
+        setautoModalOpen(!isautoModalOpen);
       })
       .catch(function(error) {
         console.log(error);
@@ -181,6 +182,7 @@ const Score: FC = () => {
       .post("http://moaroom-back.duckdns.org:8080/assignment/score", params)
       .then(function(response) {
         console.log(response);
+        setmanualModalOpen(!ismanualModalOpen);
       })
       .catch(function(error) {
         console.log(error);

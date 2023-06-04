@@ -7,7 +7,6 @@ import axios from "axios";
 import { stringify } from "querystring";
 
 const Assignment: FC = () => {
-  // data interface(now deprecated) TODO: apply
   interface UrlResp {
     id: string;
     lectureId: string;
@@ -26,7 +25,7 @@ const Assignment: FC = () => {
   // const location = useLocation();
   // const user_id = location.state.user_id;
   // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
-  const user_id = "c341d553-ab17-42a7-a5a7-a5b36a038467";
+  const user_id = "cc285810-16f4-45cd-ae7c-3433781afa78";
 
   const [url, setUrl] = useState<UrlResp | string>("");
   const [loading, setLoading] = useState(false);

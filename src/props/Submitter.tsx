@@ -9,15 +9,24 @@ type submittersPropsList = {
 };
 
 const Submitter = ({ submittersProps }: submittersPropsList) => {
-  const { id, name, step, score, user_id, assignment_id } = submittersProps;
+  const {
+    id,
+    name,
+    step,
+    score,
+    user_id,
+    assignment_id,
+    isProfessor,
+  } = submittersProps;
   console.log("submittersProps:" + submittersProps);
   const navigate = useNavigate();
-  const goScore = (name: string) => {
+  const goScore = () => {
     navigate("/score", {
       state: {
         student_id: id, // student
         professor_id: user_id, // professor
         assignment_id: assignment_id,
+        isProfessor: isProfessor,
       },
     });
   };
@@ -34,19 +43,27 @@ const Submitter = ({ submittersProps }: submittersPropsList) => {
           {/* 채점 완료인 경우 */}
           {step == 3 && (
             <button
-              onClick={() => goScore(name)}
+              onClick={() => goScore()}
               className="btn btn-outline-success text-center shadow-none mb-3 submit-btn"
             >
               채점 완료: {score}점/100점
             </button>
           )}
           {/* 그 외 */}
-          {step != 3 && (
+          {isProfessor && step != 3 && (
             <button
-              onClick={() => goScore(name)}
+              onClick={() => goScore()}
               className="btn btn-outline-danger text-center shadow-none mb-3 submit-btn"
             >
               채점하기
+            </button>
+          )}
+          {!isProfessor && step != 3 && (
+            <button
+              onClick={() => goScore()}
+              className="btn btn-outline-danger text-center shadow-none mb-3 submit-btn"
+            >
+              채점중
             </button>
           )}
         </div>

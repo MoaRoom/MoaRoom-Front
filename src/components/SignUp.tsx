@@ -35,7 +35,6 @@ const SignUp: FC = () => {
       role: Number(selectedRole),
     };
     console.log(params);
-    // TODO 서버 나오면 디버깅 필요
     axios
       .post("http://moaroom-back.duckdns.org:8080/user/new", params)
       .then(function(response) {
@@ -63,7 +62,7 @@ const SignUp: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar/>
+        <Navbar />
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"

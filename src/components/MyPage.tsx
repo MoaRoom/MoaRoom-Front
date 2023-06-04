@@ -26,9 +26,11 @@ const MyPage: FC = () => {
   };
 
   // 로그인? 페이지와 연동
-  // const location_user = useLocation();
-  // const user_id = location_user.state.user_id; // professor
-  const user_id = "31049273-68e7-4f2d-bb22-f193a955a3aa"; // professor or student
+  // const location = useLocation();
+  // const user_id = location.state.user_id; // professor
+  // const isProfessor = location.state.isProfessor
+  const user_id = "18458100-e4cc-4a49-ad36-2a8c565446ed"; // professor or student
+  const isProfessor = true;
 
   // create modal
   const [iscreateModalOpen, setcreateModalOpen] = useState<boolean>(false);
@@ -84,44 +86,45 @@ const MyPage: FC = () => {
       room_count: data.room_count,
     };
     console.log(params);
-    // TODO: 강의 삭제 기능 구현
-    // axios
-    //   .post("http://moaroom-back.duckdns.org:8080/lecture/new", params)
-    //   .then(function(response) {
-    //     if (response.data === "") {
-    //       alert("강의 생성 안 됨");
-    //     } else {
-    //       alert("강의 생성 완료");
-    //       setcreateModalOpen(!iscreateModalOpen);
-    //     }
-    //   })
-    //   .catch(function(error) {
-    //     console.log("delete" + error);
-    //   });
+
+    axios
+      .post("http://moaroom-back.duckdns.org:8080/lecture/new", params)
+      .then(function(response) {
+        if (response.data === "") {
+          alert("강의 생성 안 됨");
+        } else {
+          alert("강의 생성 완료");
+          setcreateModalOpen(!iscreateModalOpen);
+        }
+      })
+      .catch(function(error) {
+        console.log("delete" + error);
+      });
   };
   const deleteLecture = (data: any) => {
     let params = {
       lecture_title: data.lecture_title,
       lecture_room: data.lecture_room,
     };
-    axios
-      .delete(
-        "http://moaroom-back.duckdns.org:8080/lecture/" +
-          params.lecture_title +
-          "/" +
-          params.lecture_room
-      )
-      .then(function(response) {
-        if (response.data === "") {
-          alert("강의 삭제 안 됨");
-        } else {
-          alert("강의 삭제 완료");
-          setdeleteModalOpen(!isdeleteModalOpen);
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    // TODO: 강의 삭제 기능 구현
+    // axios
+    //   .delete(
+    //     "http://moaroom-back.duckdns.org:8080/lecture/" +
+    //       params.lecture_title +
+    //       "/" +
+    //       params.lecture_room
+    //   )
+    //   .then(function(response) {
+    //     if (response.data === "") {
+    //       alert("강의 삭제 안 됨");
+    //     } else {
+    //       alert("강의 삭제 완료");
+    //       setdeleteModalOpen(!isdeleteModalOpen);
+    //     }
+    //   })
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   });
   };
 
   return (
@@ -290,20 +293,24 @@ const MyPage: FC = () => {
                   </div>
                 </div>
               </div>
-              <button
-                className="btn btn-outline-success text-center shadow-none mb-3"
-                type="submit"
-                onClick={onClickTogglecreateModal}
-              >
-                강의 개설
-              </button>
-              <button
-                className="btn btn-outline-danger text-center shadow-none mb-3"
-                type="submit"
-                onClick={onClickToggledeleteModal}
-              >
-                강의 삭제
-              </button>
+              {isProfessor && (
+                <button
+                  className="btn btn-outline-success text-center shadow-none mb-3"
+                  type="submit"
+                  onClick={onClickTogglecreateModal}
+                >
+                  강의 개설
+                </button>
+              )}
+              {isProfessor && (
+                <button
+                  className="btn btn-outline-danger text-center shadow-none mb-3"
+                  type="submit"
+                  onClick={onClickToggledeleteModal}
+                >
+                  강의 삭제
+                </button>
+              )}
             </div>
             <div className="card mb-6 mt-3 profile-lecture-box">
               <p className="">진행 중 강의</p>

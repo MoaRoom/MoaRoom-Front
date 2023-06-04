@@ -3,19 +3,17 @@ import axios from "axios";
 import SubmitterList from "../props/SubmitterList";
 import "../style/home.css";
 import Navbar from "./Navbar";
+import { useLocation } from "react-router-dom";
 import { SubmitterPropType } from "../props/SubmitterList";
 const Submit: FC = () => {
   // SubmitterList
 
   // 제출 페이지와 연동
-  // const location = useLocation();
-  // const user_id = location.state.user_id; // professor
-  // const assignment_id = location.state.assignment_id;
-  // const isProfessor = location.state.isProfessor;
+  const location = useLocation();
+  const user_id = location.state.user_id; // professor
+  const assignment_id = location.state.assignment_id;
+  const isProfessor = location.state.isProfessor;
   // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
-  const user_id = "18458100-e4cc-4a49-ad36-2a8c565446ed"; // professor?
-  const assignment_id = "710f3239-0eea-4f5b-ad9c-58e1c923ab85";
-  const isProfessor = true;
 
   const [submittersPropsList, setSubmittersPropsList] = useState<
     SubmitterPropType[]
@@ -62,7 +60,7 @@ const Submit: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         <div className="card mb-6 mt-3 profile-submitter-box">
           <div
             style={{

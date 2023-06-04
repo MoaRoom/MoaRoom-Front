@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "../style/home.css";
 import MyPageLectureList, { LectureType } from "../props/MyPageLectureList";
@@ -25,12 +25,10 @@ const MyPage: FC = () => {
     classes: string[];
   };
 
-  // 로그인? 페이지와 연동
-  // const location = useLocation();
-  // const user_id = location.state.user_id; // professor
-  // const isProfessor = location.state.isProfessor
-  const user_id = "18458100-e4cc-4a49-ad36-2a8c565446ed"; // professor or student
-  const isProfessor = true;
+  const location = useLocation();
+  const user_id = location.state.user_id; // professor or student
+  const isProfessor = location.state.isProfessor;
+
 
   // create modal
   const [iscreateModalOpen, setcreateModalOpen] = useState<boolean>(false);
@@ -130,7 +128,7 @@ const MyPage: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         {iscreateModalOpen && (
           <Modal onClickToggleModal={onClickTogglecreateModal}>
             <form autoComplete="off" onSubmit={handleSubmit(createLecture)}>

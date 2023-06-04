@@ -18,15 +18,22 @@ const SignUp: FC = () => {
   const navigate = useNavigate();
   const login = () => {
     navigate("/login", {
-      state: {},
+      state: { user_id: user_id, isProfessor: isProfessor },
     });
   };
+  const [user_id, setUserId] = useState<string>("");
+  const [isProfessor, setIsProfessor] = useState<boolean>(false);
+
   // The selected role
   const [selectedRole, setSelectedRole] = useState<String>();
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedRole(event.target.value);
   };
   const submitData = (data: any) => {
+    setUserId(data.user_id);
+    if (data.role == 2) {
+      setIsProfessor(true);
+    }
     let params = {
       id: data.user_id,
       password: data.password,
@@ -51,7 +58,7 @@ const SignUp: FC = () => {
         reset();
         setTimeout(() => {
           navigate("/login", {
-            state: {},
+            state: { user_id: user_id, isProfessor: isProfessor },
           });
         }, 3000);
       })
@@ -62,7 +69,7 @@ const SignUp: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"

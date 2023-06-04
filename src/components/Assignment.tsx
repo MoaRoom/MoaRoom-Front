@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import "../style/home.css";
 import Modal from "../props/Modal";
 import Navbar from "./Navbar";
+import { navPropsType } from "./Navbar";
 import axios from "axios";
 import { stringify } from "querystring";
 
@@ -25,25 +26,39 @@ const Assignment: FC = () => {
   // const location = useLocation();
   // const user_id = location.state.user_id;
   // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
-  const user_id = "cc285810-16f4-45cd-ae7c-3433781afa78";
+  const user_id = "18458100-e4cc-4a49-ad36-2a8c565446ed";
 
   const [url, setUrl] = useState<UrlResp | string>("");
-  const [loading, setLoading] = useState(false);
+
+  const [isProfessor, setIsProfessor] = useState<boolean>(false);
 
   useEffect(() => {
-    setLoading(true);
     axios
       .get("http://moaroom-back.duckdns.org:8080/url/" + user_id)
       .then((response) => {
         setUrl(response.data.containerAddress);
-        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://moaroom-back.duckdns.org:8080/user/" + user_id)
+      .then((response) => {
+        if (response.data.role == 2) {
+          setIsProfessor(true);
+        } else {
+        }
       });
   }, []);
 
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar
+          navProps={
+            { user_id: user_id, isProfessor: isProfessor } as navPropsType
+          }
+        />
         {isModalOpen && (
           <Modal onClickToggleModal={onClickToggleModal}>
             <h3>주의사항</h3>
@@ -57,7 +72,7 @@ const Assignment: FC = () => {
             </ul>
           </Modal>
         )}
-        {loading && url ? (
+        {url ? (
           <div>Loading...</div>
         ) : (
           <iframe

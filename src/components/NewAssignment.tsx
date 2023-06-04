@@ -16,15 +16,21 @@ const newAssignment: FC = () => {
     reset,
     formState: { errors },
   } = useForm();
+  const [user_id, setUserId] = useState<string>("");
+  const [isProfessor, setIsProfessor] = useState<boolean>(false);
+
   // The selected role
   const [selectedRole, setSelectedRole] = useState<String>();
   const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedRole(event.target.value);
+    if (selectedRole == "2") {
+      setIsProfessor(true);
+    }
   };
   const navigate = useNavigate();
   const location = useLocation();
-  const [startDate, setStartDate] = useState<Date|null>(new Date());
-  const [dueDate, setDueDate] = useState<Date|null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [dueDate, setDueDate] = useState<Date | null>(null);
   const submitData = (data: any) => {
     let params = {
       lecture_id: location.state.lecture_id,
@@ -34,16 +40,20 @@ const newAssignment: FC = () => {
       due_date: dueDate,
       description: data.description,
     };
+    setUserId(location.state.user_id);
+
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
     axios
       .post("http://moaroom-back.duckdns.org:8080/assignment/new", params)
       .then(function(response) {
-        console.log(response.data)
-        if (response.data == "새로운 과제 등록 완료"){
-            navigate("/lecture", {
-              state: { user_id:  location.state.user_id},
-            });
+        if (response.data == "새로운 과제 등록 완료") {
+          navigate("/lecture", {
+            state: {
+              user_id: location.state.user_id,
+              isProfessor: isProfessor,
+            },
+          });
         }
         toast.success(response.data.message, {
           position: "top-right",
@@ -64,15 +74,15 @@ const newAssignment: FC = () => {
   return (
     <>
       <div className="background">
-      <Navbar />
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"
-            style={{ height: "80vh"}}
+            style={{ height: "80vh" }}
           >
             <div
               className="card mb-3 mt-3 rounded"
-              style={{ maxWidth: "80%", height:"50vh" }}
+              style={{ maxWidth: "80%", height: "50vh" }}
             >
               <div className="col-md-12">
                 <div className="card-body">
@@ -103,12 +113,15 @@ const newAssignment: FC = () => {
                     </div>
                     <div className="">
                       <label className="form-label">오픈 예정일</label>
-                      <DatePicker selected={startDate} onChange={date => setStartDate(date)} 
+                      <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
                         showTimeSelect
-                        timeFormat="HH:mm" //시간 포맷 
+                        timeFormat="HH:mm" //시간 포맷
                         timeIntervals={1}
                         timeCaption="time"
-                        dateFormat="yyyy/MM/dd HH:mm" />
+                        dateFormat="yyyy/MM/dd HH:mm"
+                      />
                       {errors.start_date && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
                           {/* {errors.start_date.message} */}
@@ -118,12 +131,15 @@ const newAssignment: FC = () => {
                     </div>
                     <div className="">
                       <label className="form-label">마감일</label>
-                      <DatePicker selected={dueDate} onChange={date => setDueDate(date)} 
+                      <DatePicker
+                        selected={dueDate}
+                        onChange={(date) => setDueDate(date)}
                         showTimeSelect
-                        timeFormat="HH:mm" //시간 포맷 
+                        timeFormat="HH:mm" //시간 포맷
                         timeIntervals={1}
                         timeCaption="time"
-                        dateFormat="yyyy/MM/dd HH:mm" />
+                        dateFormat="yyyy/MM/dd HH:mm"
+                      />
                       {errors.due_date && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
                           errors.due_date.message

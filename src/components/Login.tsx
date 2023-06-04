@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "../style/home.css";
 import axios from "axios";
@@ -6,13 +6,16 @@ import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useNavigate } from "react-router";
 import Navbar from "./Navbar";
+import navPropsType from "./Navbar";
 const Login: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({
     id: "",
-    password: ""
-  })
-  const {id, password} = loginInfo;
+    password: "",
+  });
+  const { id, password } = loginInfo;
+  const [user_id, setUserId] = useState<string>("");
+  const [isProfessor, setIsProfessor] = useState<boolean>(false);
 
   const onChangeInput = (e: any) => {
     const { name, value } = e.target;
@@ -29,6 +32,16 @@ const Login: FC = (): JSX.Element => {
       state: {},
     });
   };
+  useEffect(() => {
+    axios
+      .get("http://moaroom-back.duckdns.org:8080/user/" + user_id)
+      .then((response) => {
+        if (response.data.role == 2) {
+          setIsProfessor(true);
+        } else {
+        }
+      });
+  }, [user_id]);
   const login = (data: any) => {
     let params = {
       id: data.id,
@@ -41,9 +54,9 @@ const Login: FC = (): JSX.Element => {
       .post("http://moaroom-back.duckdns.org:8080/login", params)
       .then(function(response) {
         if (response.data === "") {
-          alert("로그인 정보가 없습니다. 다시 로그인 해주세요.")
-          setLoginInfo({id:"", password:""})
-          console.log(response)
+          alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+          setLoginInfo({ id: "", password: "" });
+          console.log(response);
           toast.error(response.data.error, {
             position: "top-right",
             autoClose: 3000,
@@ -55,7 +68,7 @@ const Login: FC = (): JSX.Element => {
             toastId: "my_toast",
           });
         } else {
-          console.log(response)
+          console.log(response);
           toast.success(response.data.message, {
             position: "top-right",
             autoClose: 3000,
@@ -67,10 +80,10 @@ const Login: FC = (): JSX.Element => {
             toastId: "my_toast",
           });
           localStorage.setItem("auth", response.data.token);
-          localStorage.setItem("isLogin", "True")
+          localStorage.setItem("isLogin", "True");
           setTimeout(() => {
             navigate("/lecture", {
-              state: { user_id: response.data },
+              state: { user_id: response.data, isProfessor: isProfessor },
             });
           }, 3000);
         }
@@ -82,7 +95,7 @@ const Login: FC = (): JSX.Element => {
   return (
     <>
       <div className="background">
-        <Navbar/>
+        <Navbar navProps={{ user_id: user_id, isProfessor: isProfessor }} />
         <div className="container">
           <div
             className="row d-flex justify-content-center align-items-center"
@@ -131,9 +144,7 @@ const Login: FC = (): JSX.Element => {
                         </p>
                       )}
                     </div>
-                    <div
-                      className="text-center mt-4 "
-                    >
+                    <div className="text-center mt-4 ">
                       <button
                         className="btn btn-outline-primary text-center shadow-none mb-3"
                         type="submit"

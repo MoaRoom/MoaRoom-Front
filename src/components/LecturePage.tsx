@@ -5,6 +5,7 @@ import axios from "axios";
 import Lecture from "../props/Lecture";
 import Paging from "../components/Paging";
 import Navbar from "./Navbar";
+import { navPropsType } from "./Navbar";
 
 export type LectureType = {
   lecture_id: string;
@@ -33,7 +34,11 @@ const LecturePage: FC = () => {
   return (
     <>
       <div className="background">
-        <Navbar />
+        <Navbar
+          navProps={
+            { user_id: user_id, isProfessor: isProfessor } as navPropsType
+          }
+        />
         <div className="search">
           <input id="searchtext" type="text"></input>
           <button>

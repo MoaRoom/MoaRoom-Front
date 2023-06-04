@@ -14,13 +14,47 @@ const Score: FC = () => {
     reset,
     formState: { errors },
   } = useForm();
-  // user info
-  const location = useLocation();
-  const { user_name } = location.state;
+  interface UserResp {
+    userId: string;
+    id: string;
+    password: string;
+    name: string;
+    userNum: number;
+    role: number;
+    classes: string[];
+  }
+  interface UrlResp {
+    id: string;
+    lectureId: string;
+    containerAddress: string;
+    apiEndpoint: string;
+  }
+  interface LectureResp {
+    lectureId: string;
+    title: string;
+    professorId: string;
+    room: number;
+    professor_name: string;
+  }
+  interface AssignmentResp {
+    assignmentId: string;
+    lectureId: string;
+    title: string;
+    startDate: string;
+    dueDate: string;
+    description: string;
+  }
+
+  // 제출 페이지와 연동
+  // const location = useLocation();
+  // const user_id = location.state.user_id;
+  // const location = useLocation();
+  // const assignment_id = location.state.assignment_id;
+  const user_id = "39194bb0-14c4-4eb9-813b-7ee984359d79"; // student
+  const assignment_id = "59485a6b-cd14-4d96-adac-59a781a5b149";
+
   // nav bar login btn
   const navigate = useNavigate();
-  const updateProfile = () => {};
-  const deleteProfile = () => {};
 
   // create modal
   const [isautoModalOpen, setautoModalOpen] = useState<boolean>(false);
@@ -37,23 +71,90 @@ const Score: FC = () => {
   }, [ismanualModalOpen]);
 
   // data
-  const [assignments, setAssignments] = useState<string>("");
+  const [assignment, setAssignment] = useState<AssignmentResp>();
+  const [code, setCode] = useState<string>("");
+  const [user, setUser] = useState<UserResp>();
+  const [lecture, setLecture] = useState<LectureResp>();
+  const [url, setUrl] = useState<UrlResp>();
+
+  // You may need an appropriate loader to handle this file type.
+  // 위 에러 나는데 어떻게 해결해야할지를 몰라서 일단 다 useState 때림
+  const [name, setName] = useState<string>("");
+  const [userNum, setUserNum] = useState<string>("");
+  const [lectitle, setLectitle] = useState<string>("");
+  const [room, setRoom] = useState<string>("");
+  const [asgntitle, setAsgntitle] = useState<string>("");
+  const [pid, setPid] = useState<string>("");
+  const [lid, setLid] = useState<string>("");
+  const [pname, setPname] = useState<string>("");
+  const [apiEP, setApiEP] = useState<string>("");
+  const [score, setScore] = useState<number>();
 
   useEffect(() => {
     axios
-      .get("http://localhost:8002/assignment/?id=1914395&assignment_id=1a2b")
+      .get("http://moaroom-back.duckdns.org:8080/user/" + user_id)
       .then((response) => {
-        setAssignments(JSON.parse(response.data).content);
+        // setUser(JSON.parse(JSON.stringify(response.data)));
+        setName(JSON.parse(JSON.stringify(response.data)).name);
+        setUserNum(JSON.parse(JSON.stringify(response.data)).userNum);
       });
   }, []);
 
-  const createLecture = (data: any) => {
+  useEffect(() => {
+    if (pid != "") {
+      axios
+        .get("http://moaroom-back.duckdns.org:8080/url/" + pid)
+        .then((response) => {
+          setUrl(response.data);
+          setApiEP(response.data.apiEndpoint);
+        });
+    }
+  }, [pid]);
+
+  useEffect(() => {
+    if (apiEP != "") {
+      axios
+        .get(
+          apiEP +
+            "/assignment/?id=" +
+            user_id +
+            "&assignment_id=" +
+            assignment_id
+        )
+        .then((response) => {
+          setCode(JSON.parse(response.data).content);
+        });
+    }
+  }, [apiEP]);
+
+  useEffect(() => {
+    axios
+      .get("http://moaroom-back.duckdns.org:8080/assignment/" + assignment_id)
+      .then((response) => {
+        setAssignment(JSON.parse(JSON.stringify(response.data)));
+        setAsgntitle(JSON.parse(JSON.stringify(response.data)).title);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("http://moaroom-back.duckdns.org:8080/lecture/info/" + assignment_id) // TODO
+      .then((response) => {
+        setLecture(response.data);
+        setLectitle(response.data.title);
+        setRoom(response.data.room);
+        setPname(response.data.professor_name);
+        setPid(response.data.professor_id);
+        setLid(response.data.lecture_id);
+      });
+  }, []);
+
+  const autoScore = (data: any) => {
     let params = {
       title: data.title,
       room: data.room,
     };
     console.log(params);
-    // TODO 서버 나오면 디버깅 필요
+    // TODO 자동채점 기능 시작 전
     axios
       .post("http://localhost:3000/api/signup", params)
       .then(function(response) {
@@ -68,22 +169,19 @@ const Score: FC = () => {
         console.log(error);
       });
   };
-  const deleteLecture = (data: any) => {
+  const manualScore = (data: any) => {
     let params = {
-      title: data.title,
-      room: data.room,
+      lecture_id: lid,
+      assignment_id: assignment_id,
+      user_id: user_id,
+      score: data.score,
     };
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
     axios
-      .post("http://localhost:3000/api/signup", params)
+      .post("http://moaroom-back.duckdns.org:8080/assignment/score", params)
       .then(function(response) {
-        reset();
-        setTimeout(() => {
-          navigate("/login", {
-            state: {},
-          });
-        }, 3000);
+        console.log(response);
       })
       .catch(function(error) {
         console.log(error);
@@ -96,12 +194,12 @@ const Score: FC = () => {
         <Navbar />
         {isautoModalOpen && (
           <Modal onClickToggleModal={onClickToggleautoModal}>
-            <form autoComplete="off" onSubmit={handleSubmit(createLecture)}>
+            <form autoComplete="off" onSubmit={handleSubmit(autoScore)}>
               <div className="mt-4 mb-3 text-center ">
                 <button
                   className="btn btn-outline-primary text-center shadow-none mb-3 align-items-center"
                   // type="submit"
-                  onClick={createLecture}
+                  onClick={autoScore}
                 >
                   자동 채점
                 </button>
@@ -111,7 +209,7 @@ const Score: FC = () => {
         )}
         {ismanualModalOpen && (
           <Modal onClickToggleModal={onClickTogglemanualModal}>
-            <form autoComplete="off" onSubmit={handleSubmit(deleteLecture)}>
+            <form autoComplete="off" onSubmit={handleSubmit(manualScore)}>
               <div className="mt-3 mb-3">
                 <label className="form-label">점수 입력란</label>
                 <input
@@ -121,6 +219,7 @@ const Score: FC = () => {
                   {...register("score", {
                     required: "score is required!",
                   })}
+                  value={score}
                 />
                 {errors.score && (
                   <p className="text-danger" style={{ fontSize: 14 }}>
@@ -132,7 +231,7 @@ const Score: FC = () => {
                 <button
                   className="btn btn-outline-info text-center shadow-none mb-3"
                   // type="submit"
-                  onClick={deleteLecture}
+                  onClick={manualScore}
                 >
                   수동 채점
                 </button>
@@ -150,7 +249,7 @@ const Score: FC = () => {
             }}
           >
             <div className="card mb-6 mt-3 profile-lecture-box">
-              <File content={assignments} />
+              <File content={code} />
             </div>
             <div className="card mb-3 mt-3 profile-box">
               <div className="card mb-3 mt-3 rounded" style={{ float: "left" }}>
@@ -166,12 +265,12 @@ const Score: FC = () => {
                       />
                     </div>
                     <div className="mb-1">
-                      <p className="">이름: {user_name}</p>
-                      <p className="">학번: 1914395</p>
-                      <p className="">강의명: 프로그래밍 입문</p>
-                      <p className="">교수: 이종우</p>
-                      <p className="">분반: 001</p>
-                      <p className="">과제명: 프로그래밍 리포트 #1</p>
+                      <p className="">이름: {name}</p>
+                      <p className="">학번: {userNum}</p>
+                      <p className="">강의명: {lectitle}</p>
+                      <p className="">교수: {pname}</p>
+                      <p className="">분반: {room}</p>
+                      <p className="">과제명: {asgntitle}</p>
                     </div>
                   </div>
                 </div>

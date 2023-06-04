@@ -3,29 +3,39 @@ import axios from "axios";
 import SubmitterList from "../props/SubmitterList";
 import "../style/home.css";
 import Navbar from "./Navbar";
+import { SubmitterPropType } from "../props/SubmitterList";
 const Submit: FC = () => {
   // data interface(now deprecated) TODO: apply
-  interface UrlResp {
-    id: string;
-    lectureId: string;
-    containerAddress: string;
-    apiEndpoint: string;
-  }
+  // SubmitterList
 
   // 제출 페이지와 연동
-  // const location = useLocation();
-  // const assignment_id = location.state.assignment_id;
-  const assignment_id = "f58b21b6-0a6e-4cad-a563-77d370ef067e";
+  // const location_user = useLocation();
+  // const user_id = location_user.state.user_id; // professor
+  // const location_asgn = useLocation();
+  // const assignment_id = location_asgn.state.assignment_id;
+  // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
+  const user_id = "e5a94f28-2322-413d-b8d3-47ca59ea4a4d"; // professor
+  const assignment_id = "59485a6b-cd14-4d96-adac-59a781a5b149";
+  const [submittersPropsList, setSubmittersPropsList] = useState<
+    SubmitterPropType[]
+  >([]);
 
-  const [data, setData] = useState<UrlResp[]>([]);
-
+  var tmpList: SubmitterPropType[] = [];
   useEffect(() => {
     axios
-      .get(
-        "http://moaroom-back.duckdns.org:8080/assignment/list/" + assignment_id
-      )
+      .get("http://moaroom-back.duckdns.org:8080/step/" + assignment_id)
       .then((response) => {
-        setData(response.data);
+        for (let i = 0; i < response.data.length; i++) {
+          tmpList.push({
+            id: response.data[i].id,
+            name: response.data[i].name,
+            step: response.data[i].step,
+            score: response.data[i].score,
+            user_id: user_id,
+            assignment_id: assignment_id,
+          } as SubmitterPropType);
+        }
+        setSubmittersPropsList(tmpList);
       });
   }, []);
 
@@ -56,9 +66,7 @@ const Submit: FC = () => {
               일괄 채점
             </button>
           </div>
-          {data.map((user) => (
-            <SubmitterList user={user} />
-          ))}
+          <SubmitterList submittersPropsList={submittersPropsList} />
         </div>
       </div>
     </>

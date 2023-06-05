@@ -1,7 +1,10 @@
 .navbar {
-    height: 87px;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    background: #383839;
-  }
+  height: 87px;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  background: #383839;
+}
+.logo {
+  height: 55px;
+}

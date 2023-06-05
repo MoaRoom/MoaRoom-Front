@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { useNavigate } from "react-router";
 import "../style/Navbar.css";
+import logo from "../logo/logo-web.png";
 
 export type navPropsType = {
   user_id: string;
@@ -33,12 +34,12 @@ const Navbar = ({ navProps }: { navProps: navPropsType }) => {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          paddingLeft: 50,
+          paddingLeft: 10,
           paddingRight: 50,
         }}
       >
         <div>
-          <h3 className="m-3">Logo</h3>
+          <img className="logo" src={logo} />
         </div>
         <div>
           <button className="navbtn" onClick={logout}>

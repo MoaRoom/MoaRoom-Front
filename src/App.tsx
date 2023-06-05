@@ -26,7 +26,7 @@ function App() {
         <Route path="/submit" element={<Submit />} />
         <Route path="/lecture" element={<LecturePage />} />
         <Route path="/assignmentList" element={<AssignmentPage />} />
-        <Route path="/newassignment" element={<NewAssignment />}/>
+        <Route path="/newassignment" element={<NewAssignment />} />
       </Routes>
     </BrowserRouter>
   );

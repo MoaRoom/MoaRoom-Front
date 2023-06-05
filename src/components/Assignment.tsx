@@ -71,18 +71,14 @@ const Assignment: FC = () => {
             </ul>
           </Modal>
         )}
-        {url ? (
-          <div>Loading...</div>
-        ) : (
-          <iframe
-            id="container"
-            title="container iframe"
-            allow="fullscreen"
-            width="100%"
-            height="700"
-            src={url.toString()}
-          />
-        )}
+        <iframe
+          id="container"
+          title="container iframe"
+          allow="fullscreen"
+          width="100%"
+          height="700"
+          src={url.toString()}
+        />
       </div>
       <img
         onClick={onClickToggleModal}

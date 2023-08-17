@@ -155,7 +155,7 @@ const Login: FC = (): JSX.Element => {
                         className="btn btn-outline-primary text-center shadow-none mb-3"
                         onClick={goSignUp}
                       >
-                        회원가입
+                        회원가입.
                       </button>
                     </div>
                   </form>

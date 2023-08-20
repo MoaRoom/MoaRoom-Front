@@ -1,13 +1,13 @@
 import React, { FC, useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import "../style/LecturePage.css";
 import Paging from "../components/Paging";
 import Assignment from "../props/Assignment";
 import AssignmentModal from "../props/AssignmentModal";
 import Navbar from "./Navbar";
 import { navPropsType } from "./Navbar";
+import api from "../utils/api";
 
 export type AssignmentType = {
   lecture_id: string;
@@ -56,8 +56,8 @@ const AssignmentPage: FC = () => {
   };
   const deleteAssignment = (data: any) => {
     const title = data.title;
-    axios
-      .delete("http://moaroom-back.duckdns.org:8080/assignment/" + title)
+    api.client
+      .delete("/assignments/" + title)
       .then(function(response) {
         if (response.data == "삭제 성공") {
           alert("과제가 삭제되었습니다.");
@@ -74,8 +74,8 @@ const AssignmentPage: FC = () => {
 
   useEffect(() => {
     var tmpList: AssignmentPropType[] = [];
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/assignment/all/" + user_id)
+    api.client
+      .get("/assignments/users/" + user_id)
       .then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           if (lecture_id == response.data[i].lecture_id) {
@@ -202,7 +202,7 @@ const AssignmentPage: FC = () => {
           )}
           {
             assignmentPropsList == null &&(
-              <Paging />
+              <Paging count={assignmentList.length}/>
             )
           }
         </div>

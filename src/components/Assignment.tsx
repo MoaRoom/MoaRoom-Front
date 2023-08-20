@@ -4,8 +4,7 @@ import "../style/home.css";
 import Modal from "../props/Modal";
 import Navbar from "./Navbar";
 import { navPropsType } from "./Navbar";
-import axios from "axios";
-import { stringify } from "querystring";
+import api from "../utils/api";
 
 const Assignment: FC = () => {
   interface UrlResp {
@@ -32,16 +31,16 @@ const Assignment: FC = () => {
   const [isProfessor, setIsProfessor] = useState<boolean>(false);
 
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/url/" + user_id)
+    api.client
+      .get("/urls/" + user_id)
       .then((response) => {
         setUrl(response.data.containerAddress);
       });
   }, []);
 
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/user/" + user_id)
+    api.client
+      .get("/users/" + user_id)
       .then((response) => {
         if (response.data.role == 2) {
           setIsProfessor(true);

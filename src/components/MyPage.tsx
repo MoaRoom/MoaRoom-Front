@@ -1,12 +1,11 @@
 import React, { FC, useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import "../style/home.css";
 import MyPageLectureList, { LectureType } from "../props/MyPageLectureList";
 import Modal from "../props/Modal";
 import Navbar from "./Navbar";
-import { isDOMComponent } from "react-dom/test-utils";
+import api from "../utils/api";
 const MyPage: FC = () => {
   const {
     register,
@@ -52,15 +51,18 @@ const MyPage: FC = () => {
   const [userNum, setUserNum] = useState<string>("");
 
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/lecture/all/" + user_id)
+    api.client
+      .get("/lectures/users/" + user_id)
       .then((response) => {
+        console.log(response)
         setLectureList(response.data);
+      }).catch(function(error) {
+        console.log(error)
       });
   }, [lectureList, iscreateModalOpen, isdeleteModalOpen]); // refresh 가능하도록
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/user/" + user_id)
+    api.client
+      .get("/users/" + user_id)
       .then((response) => {
         setUserInfo(response.data);
         setName(response.data.name);
@@ -72,20 +74,69 @@ const MyPage: FC = () => {
   const navigate = useNavigate();
 
   // 유저 수정/탈퇴 관련
-  // const updateProfile = () => {};
-  // const deleteProfile = () => {};
+  const updateProfile = (data: any) => {
+    let params = {
+      id: data.id,
+      password: user_id,
+      name: data.name,
+      user_num: data.user_num,
+      role:data.role
+    };
+    console.log(params);
+
+    api.client
+      .post("/users/"+user_id, params)
+      .then(function(response) {
+        if (response.data === null) {
+          alert("정보 수정 완료");
+          setcreateModalOpen(!iscreateModalOpen);
+        } else {
+          alert("수정 실패");
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+  const deleteProfile = () => {
+    let params = {
+      user_id: user_id
+    };
+    console.log(params);
+
+    api.client
+      .post("/users/"+user_id, {data: params})
+      .then(function(response) {
+        if (response.data === "삭제 성공") {
+          alert("삭제 성공");
+          localStorage.removeItem("isLogin")
+          localStorage.removeItem("auth")
+          setTimeout(() => {
+            navigate("/login", {
+              state: { user_id: null, isProfessor: null },
+            });
+          }, 1000);
+        } else {
+          alert("삭제 실패");
+          setcreateModalOpen(!iscreateModalOpen);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
 
   const createLecture = (data: any) => {
     let params = {
       title: data.title,
-      professor_id: user_id,
+      professorId: user_id,
       room: data.room,
-      room_count: data.room_count,
+      roomCount: data.room_count,
     };
     console.log(params);
 
-    axios
-      .post("http://moaroom-back.duckdns.org:8080/lecture/new", params)
+    api.client
+      .post("/lecture", params)
       .then(function(response) {
         if (response.data === "") {
           alert("강의 생성 안 됨");
@@ -95,7 +146,7 @@ const MyPage: FC = () => {
         }
       })
       .catch(function(error) {
-        console.log("delete" + error);
+        console.log(error);
       });
   };
   const deleteLecture = (data: any) => {
@@ -103,25 +154,21 @@ const MyPage: FC = () => {
       lecture_title: data.lecture_title,
       lecture_room: data.lecture_room,
     };
-    // TODO: 강의 삭제 기능 구현
-    // axios
-    //   .delete(
-    //     "http://moaroom-back.duckdns.org:8080/lecture/" +
-    //       params.lecture_title +
-    //       "/" +
-    //       params.lecture_room
-    //   )
-    //   .then(function(response) {
-    //     if (response.data === "") {
-    //       alert("강의 삭제 안 됨");
-    //     } else {
-    //       alert("강의 삭제 완료");
-    //       setdeleteModalOpen(!isdeleteModalOpen);
-    //     }
-    //   })
-    //   .catch(function(error) {
-    //     console.log(error);
-    //   });
+    //TODO: 강의 삭제 기능 구현
+    api.client
+      .delete(
+        "/lectures/title-class", {data : params})
+      .then(function(response) {
+        if (response.data === "삭제 성공") {
+          alert("강의 삭제 완료");
+          setdeleteModalOpen(!isdeleteModalOpen);
+        } else {
+          alert("강의 삭제 안 됨");
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -270,8 +317,7 @@ const MyPage: FC = () => {
                         float: "right",
                       }}
                     >
-                      {/* TODO: 유저 수정/탈퇴 관련 */}
-                      {/* <button
+                      <button
                         className="btn btn-outline-primary text-center shadow-none mb-3"
                         type="submit"
                         onClick={updateProfile}
@@ -285,7 +331,7 @@ const MyPage: FC = () => {
                         onClick={deleteProfile}
                       >
                         탈퇴
-                      </button> */}
+                      </button>
                     </div>
                   </div>
                 </div>

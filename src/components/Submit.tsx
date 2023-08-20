@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect } from "react";
-import axios from "axios";
 import SubmitterList from "../props/SubmitterList";
 import "../style/home.css";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
 import { SubmitterPropType } from "../props/SubmitterList";
+import api from "../utils/api";
 const Submit: FC = () => {
   // SubmitterList
 
@@ -21,8 +21,8 @@ const Submit: FC = () => {
 
   var tmpList: SubmitterPropType[] = [];
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/step/" + assignment_id)
+    api.client
+      .get("/steps/" + assignment_id)
       .then((response) => {
         if (isProfessor) {
           for (let i = 0; i < response.data.length; i++) {

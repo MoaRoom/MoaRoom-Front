@@ -1,12 +1,11 @@
 import React, { FC, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "../style/home.css";
-import axios from "axios";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useNavigate } from "react-router";
 import Navbar from "./Navbar";
-import navPropsType from "./Navbar";
+import api from "../utils/api";
 const Login: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({
@@ -33,8 +32,8 @@ const Login: FC = (): JSX.Element => {
     });
   };
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/user/" + user_id)
+    api.client
+      .get("/users/" + user_id)
       .then((response) => {
         if (response.data.role == 2) {
           setIsProfessor(true);
@@ -49,9 +48,8 @@ const Login: FC = (): JSX.Element => {
     };
     console.log(params);
 
-    // TODO 서버 나오면 디버깅 필요
-    axios
-      .post("http://moaroom-back.duckdns.org:8080/login", params)
+    api.client
+      .post("/login", params)
       .then(function(response) {
         if (response.data === "") {
           alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");

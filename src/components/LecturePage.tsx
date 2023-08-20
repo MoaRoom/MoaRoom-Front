@@ -1,17 +1,17 @@
 import React, { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../style/LecturePage.css";
-import axios from "axios";
 import Lecture from "../props/Lecture";
 import Paging from "../components/Paging";
 import Navbar from "./Navbar";
 import { navPropsType } from "./Navbar";
+import api from "../utils/api";
 
 export type LectureType = {
   lecture_id: string;
   title: string;
-  professor_name: string;
   room: number;
+  professor_name: string;
   enroll: Boolean | null;
 };
 
@@ -21,8 +21,8 @@ const LecturePage: FC = () => {
   const [lectureList, setLectureList] = useState<LectureType[]>([]);
   const [isProfessor, setIsProfessor] = useState<Boolean>(true);
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/lecture/all/" + user_id)
+    api.client
+      .get("/lectures/users/" + user_id)
       .then((response) => {
         setLectureList(response.data);
         if (response.data.length != 0 && response.data[0].enroll != null) {
@@ -73,7 +73,7 @@ const LecturePage: FC = () => {
             ))}
           {
             lectureList != null && (
-              <Paging />
+              <Paging count={lectureList.length} />
             )
           }
         </div>

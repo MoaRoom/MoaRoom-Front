@@ -129,9 +129,9 @@ const MyPage: FC = () => {
   const createLecture = (data: any) => {
     let params = {
       title: data.title,
-      professorId: user_id,
+      professor_id: user_id,
       room: data.room,
-      roomCount: data.room_count,
+      room_count: data.room_count,
     };
     console.log(params);
 

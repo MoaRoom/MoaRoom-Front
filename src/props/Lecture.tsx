@@ -22,7 +22,7 @@ const Lecture = ({ lecture, isProfessor }: LectureProps) => {
     console.log(params);
 
     axios
-      .post("http://moaroom-back.duckdns.org:8080/lecture/enroll", params)
+      .post("http://moaroom-back.duckdns.org:8080/lecture/student/enroll", params)
       .then(function(response) {
         console.log(response)
         if (response.data === "강의 신청 완료") {

@@ -2,13 +2,13 @@ import React, { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../style/AssignmentPage.css";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import Navbar from "./Navbar";
+import api from "../utils/api";
 const newAssignment: FC = () => {
   const {
     register,
@@ -44,8 +44,8 @@ const newAssignment: FC = () => {
 
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
-    axios
-      .post("http://moaroom-back.duckdns.org:8080/assignment/new", params)
+    api.client
+      .post("/assignment", params)
       .then(function(response) {
         if (response.data == "새로운 과제 등록 완료") {
           navigate("/lecture", {

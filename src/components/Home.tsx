@@ -5,8 +5,12 @@ import { navPropsType } from "./Navbar";
 import { useLocation } from "react-router-dom";
 const Home: FC = () => {
   const location = useLocation();
-  const user_id = location.state.user_id;
-  const isProfessor = location.state.isProfessor;
+  var user_id = null;
+  var isProfessor = null;
+  if(localStorage.getItem("isLogin")){
+    user_id = location.state.user_id;
+    isProfessor = location.state.isProfessor;
+  }
   return (
     <>
       <div className="background">

@@ -12,7 +12,8 @@ const Navbar = ({ navProps }: { navProps: navPropsType }) => {
   const { user_id, isProfessor } = navProps;
   const navigate = useNavigate();
   const logout = () => {
-    localStorage.removeItem("isLogin");
+    localStorage.removeItem("isLogin")
+    localStorage.removeItem("auth")
     navigate("/home", {
       state: { user_id: user_id, isProfessor: isProfessor },
     });
@@ -63,7 +64,7 @@ const Navbar = ({ navProps }: { navProps: navPropsType }) => {
         }}
       >
         <div>
-          <h3 className="m-3">Logo</h3>
+          <img className="logo" src={logo} />
         </div>
         <div>
           <button type="submit" className="navbtn" onClick={login}>

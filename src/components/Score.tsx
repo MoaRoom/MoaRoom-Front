@@ -1,16 +1,16 @@
 import React, { FC, useCallback, useState, useEffect } from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../props/Modal";
 import File from "../props/File";
 import "../style/home.css";
 import Navbar from "./Navbar";
+import api from "../utils/api";
+import axios from "axios";
 const Score: FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm();
@@ -89,8 +89,8 @@ const Score: FC = () => {
   const [score, setScore] = useState<number>();
 
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/user/" + student_id)
+    api.client
+      .get("/users/" + student_id)
       .then((response) => {
         // setUser(JSON.parse(JSON.stringify(response.data)));
         setName(JSON.parse(JSON.stringify(response.data)).name);
@@ -100,8 +100,8 @@ const Score: FC = () => {
 
   useEffect(() => {
     if (professor_id != "") {
-      axios
-        .get("http://moaroom-back.duckdns.org:8080/url/" + professor_id)
+      api.client
+        .get("/urls/" + professor_id)
         .then((response) => {
           setUrl(response.data);
           setApiEP(response.data.apiEndpoint);
@@ -126,16 +126,16 @@ const Score: FC = () => {
   }, [apiEP]);
 
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/assignment/" + assignment_id)
+    api.client
+      .get("/assignments/" + assignment_id)
       .then((response) => {
         setAssignment(JSON.parse(JSON.stringify(response.data)));
         setAsgntitle(JSON.parse(JSON.stringify(response.data)).title);
       });
   }, []);
   useEffect(() => {
-    axios
-      .get("http://moaroom-back.duckdns.org:8080/lecture/info/" + assignment_id)
+    api.client
+      .get("/lectures/info/" + assignment_id)
       .then((response) => {
         setLecture(response.data);
         setLectitle(response.data.title);
@@ -175,8 +175,8 @@ const Score: FC = () => {
       score: data.score,
     };
     console.log(params);
-    axios
-      .post("http://moaroom-back.duckdns.org:8080/assignment/score", params)
+    api.client
+      .post("/assignments/score", params)
       .then(function(response) {
         console.log(response);
         setmanualModalOpen(!ismanualModalOpen);

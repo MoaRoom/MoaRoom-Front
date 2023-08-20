@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import "../style/home.css";
 import { ToastContainer, toast, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import Navbar from "./Navbar";
+import api from "../utils/api";
 const SignUp: FC = () => {
   const {
     register,
@@ -42,8 +42,8 @@ const SignUp: FC = () => {
       role: Number(selectedRole),
     };
     console.log(params);
-    axios
-      .post("http://moaroom-back.duckdns.org:8080/user/new", params)
+    api.client
+      .post("/user", params)
       .then(function(response) {
         toast.success(response.data.message, {
           position: "top-right",
@@ -57,7 +57,7 @@ const SignUp: FC = () => {
         });
         setTimeout(() => {
           navigate("/login", {
-            state: { user_id: user_id, isProfessor: isProfessor },
+            state: { user_id: null, isProfessor: null },
           });
         }, 1000);
       })

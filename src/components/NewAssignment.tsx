@@ -34,7 +34,7 @@ const newAssignment: FC = () => {
   const submitData = (data: any) => {
     let params = {
       lecture_id: location.state.lecture_id,
-      user_id: location.state.user_id,
+      professor_id: location.state.user_id,
       title: data.title,
       start_date: startDate,
       due_date: dueDate,

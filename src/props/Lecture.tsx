@@ -3,6 +3,7 @@ import axios from "axios";
 import {useLocation} from "react-router-dom";
 import { useNavigate } from "react-router";
 import { LectureType } from "../components/LecturePage";
+import api from "../utils/api";
 
 type LectureProps = {
   // 부모 컴포넌트에 import 해온 타입을 재사용
@@ -21,8 +22,8 @@ const Lecture = ({ lecture, isProfessor }: LectureProps) => {
     };
     console.log(params);
 
-    axios
-      .post("http://moaroom-back.duckdns.org:8080/lectures/students/enroll", params)
+    api.client
+      .post("/lectures/students/enroll", params)
       .then(function(response) {
         console.log(response)
         if (response.data === "강의 신청 완료") {

@@ -33,14 +33,16 @@ const newAssignment: FC = () => {
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const submitData = (data: any) => {
     let params = {
-      lecture_id: location.state.lecture_id,
-      professor_id: location.state.user_id,
-      title: data.title,
-      start_date: startDate,
-      due_date: dueDate,
-      description: data.description,
+        lecture_id: location.state.lecture_id,
+        professor_id: location.state.user_id,
+        title: data.title,
+        start_date: startDate!.toISOString(),
+        due_date: dueDate!.toISOString(),
+        description: data.description,
     };
+
     setUserId(location.state.user_id);
+
 
     console.log(params);
     // TODO 서버 나오면 디버깅 필요

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Pagination from "react-js-pagination";
 import "../style/Paging.css";
 
-const Paging = (count:any) => {
+const Paging = (props:any) => {
   const [page, setPage] = useState(1);
+  const count = props.data
+  console.log(props.data)
 
   const handlePageChange = (page: number) => {
     setPage(page);

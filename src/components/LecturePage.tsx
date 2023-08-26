@@ -15,6 +15,8 @@ export type LectureType = {
   enroll: Boolean | null;
 };
 
+let page: number | null;
+
 const LecturePage: FC = () => {
   const location = useLocation();
   const user_id = location.state.user_id;
@@ -29,6 +31,7 @@ const LecturePage: FC = () => {
           setIsProfessor(false);
         }
       });
+    page = lectureList.length
   }, [lectureList, isProfessor]);
   return (
     <>
@@ -73,7 +76,7 @@ const LecturePage: FC = () => {
             ))}
           {
             lectureList != null && (
-              <Paging count={lectureList.length} />
+              <Paging data={page} />
             )
           }
         </div>

@@ -39,6 +39,8 @@ const newAssignment: FC = () => {
         start_date: startDate!.toISOString(),
         due_date: dueDate!.toISOString(),
         description: data.description,
+        answer: data.answer,
+        runtime: data.runtime
     };
 
     setUserId(location.state.user_id);
@@ -161,6 +163,40 @@ const newAssignment: FC = () => {
                       {errors.description && (
                         <p className="text-danger" style={{ fontSize: 14 }}>
                           errors.description.message
+                        </p>
+                      )}
+                    </div>
+                    <div className="">
+                      <label className="form-label">답안</label>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        id="exampleFormControlInput1"
+                        {...register("answer", {
+                          required: "answer is required!",
+                        })}
+                      />
+                      {errors.answer && (
+                        <p className="text-danger" style={{ fontSize: 14 }}>
+                          {/* {errors.answer.message} */}
+                          errors.answer.message
+                        </p>
+                      )}
+                    </div>
+                    <div className="">
+                      <label className="form-label">실행시간</label>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        id="exampleFormControlInput1"
+                        {...register("runtime", {
+                          required: "runtime is required!",
+                        })}
+                      />
+                      {errors.runtime && (
+                        <p className="text-danger" style={{ fontSize: 14 }}>
+                          {/* {errors.runtime.message} */}
+                          errors.runtime.message
                         </p>
                       )}
                     </div>

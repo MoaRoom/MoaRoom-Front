@@ -86,7 +86,7 @@ const newAssignment: FC = () => {
           >
             <div
               className="card mb-3 mt-3 rounded"
-              style={{ maxWidth: "80%", height: "50vh" }}
+              style={{ maxWidth: "80%" }}
             >
               <div className="col-md-12">
                 <div className="card-body">

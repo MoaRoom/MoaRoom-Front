@@ -25,6 +25,7 @@ const Assignment = ({ assignment }: AssignmentProps) => {
       state: {
         user_id: user_id,
         assignment_id: assignment_id,
+        lecture_id: lecture_id,
         isProfessor: isProfessor,
       },
     });
@@ -35,6 +36,7 @@ const Assignment = ({ assignment }: AssignmentProps) => {
       state: {
         user_id: user_id,
         assignment_id: assignment_id,
+        lecture_id: lecture_id,
         isProfessor: isProfessor,
       },
     });

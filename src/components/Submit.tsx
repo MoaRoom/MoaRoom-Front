@@ -2,15 +2,17 @@ import React, { FC, useState, useEffect } from "react";
 import SubmitterList from "../props/SubmitterList";
 import "../style/home.css";
 import Navbar from "./Navbar";
-import { useLocation } from "react-router-dom";
+import {useLocation } from "react-router-dom";
 import { SubmitterPropType } from "../props/SubmitterList";
 import api from "../utils/api";
+import axios from "axios";
 const Submit: FC = () => {
   // SubmitterList
 
   // 제출 페이지와 연동
   const location = useLocation();
   const user_id = location.state.user_id; // professor
+  const lecture_id = location.state.lecture_id;
   const assignment_id = location.state.assignment_id;
   const isProfessor = location.state.isProfessor;
   // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
@@ -33,6 +35,7 @@ const Submit: FC = () => {
               score: response.data[i].score,
               user_id: user_id,
               assignment_id: assignment_id,
+              lecture_id: lecture_id,
               isProfessor: isProfessor,
             } as SubmitterPropType);
           }
@@ -57,6 +60,45 @@ const Submit: FC = () => {
       });
   }, []);
 
+  const [apiEP, setApiEP] = useState<string>("");
+  const autoScore = () => {
+    for (let i = 0; i<submittersPropsList.length; i++){
+      var student_id = submittersPropsList[i].id
+      api.client
+      .get("/users/" + student_id + "/" + lecture_id + "/url")
+      .then((response) => {
+        setApiEP(response.data.apiEndpoint);
+        console.log("api_EP: ", apiEP)
+        axios
+        .get(
+          apiEP +
+            "/assignment/?id=" +
+            student_id +
+            "&assignment_id=" +
+            assignment_id
+        )
+        .then((response) => {
+          var answer = JSON.parse(response.data).answer;
+          var runtime = JSON.parse(response.data).runtime;
+          let params = {
+              user_id: student_id,
+              answer: answer,
+              runtime: runtime
+          };
+          api.client
+          .post(
+            "/assignments/"+assignment_id+"/auto", params
+          )
+          .then(() => {
+            window.location.reload();
+          })
+        });
+      });
+
+      
+    }
+  };
+
   return (
     <>
       <div className="background">
@@ -80,6 +122,7 @@ const Submit: FC = () => {
                 float: "right",
               }}
               type="submit"
+              onClick={autoScore}
             >
               일괄 채점
             </button>

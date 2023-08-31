@@ -49,6 +49,7 @@ const Score: FC = () => {
   const location = useLocation();
   const student_id = location.state.student_id; //student
   const assignment_id = location.state.assignment_id;
+  const lecture_id = location.state.lecture_id;
   const professor_id = location.state.professor_id;
   const isProfessor = location.state.isProfessor;
 
@@ -101,7 +102,7 @@ const Score: FC = () => {
   useEffect(() => {
     if (professor_id != "") {
       api.client
-        .get("/urls/" + professor_id)
+        .get("/users/" + professor_id + "/" + lecture_id + "/url")
         .then((response) => {
           setUrl(response.data);
           setApiEP(response.data.apiEndpoint);
@@ -145,28 +146,6 @@ const Score: FC = () => {
       });
   }, []);
 
-  const autoScore = (data: any) => {
-    let params = {
-      title: data.title,
-      room: data.room,
-    };
-    console.log(params);
-    // TODO: 자동채점 기능 구현 필요
-    axios
-      .post("http://localhost:3000/api/signup", params)
-      .then(function(response) {
-        reset();
-        setTimeout(() => {
-          navigate("/login", {
-            state: { user_id: professor_id, isProfessor: isProfessor },
-          });
-        }, 3000);
-        setautoModalOpen(!isautoModalOpen);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  };
   const manualScore = (data: any) => {
     let params = {
       lecture_id: lid,
@@ -192,21 +171,6 @@ const Score: FC = () => {
         <Navbar
           navProps={{ user_id: professor_id, isProfessor: isProfessor }} // professor_id가 user_id로써 넘어옴(용도에 맞게)
         />
-        {isautoModalOpen && (
-          <Modal onClickToggleModal={onClickToggleautoModal}>
-            <form autoComplete="off" onSubmit={handleSubmit(autoScore)}>
-              <div className="mt-4 mb-3 text-center ">
-                <button
-                  className="btn btn-outline-primary text-center shadow-none mb-3 align-items-center"
-                  // type="submit"
-                  onClick={autoScore}
-                >
-                  자동 채점
-                </button>
-              </div>
-            </form>
-          </Modal>
-        )}
         {ismanualModalOpen && (
           <Modal onClickToggleModal={onClickTogglemanualModal}>
             <form autoComplete="off" onSubmit={handleSubmit(manualScore)}>
@@ -275,15 +239,6 @@ const Score: FC = () => {
                   </div>
                 </div>
               </div>
-              {isProfessor && (
-                <button
-                  className="btn btn-outline-primary text-center shadow-none mb-3"
-                  type="submit"
-                  onClick={onClickToggleautoModal}
-                >
-                  자동 채점
-                </button>
-              )}
               {isProfessor && (
                 <button
                   className="btn btn-outline-info text-center shadow-none mb-3"

@@ -11,6 +11,7 @@ export type SubmitterPropType = {
   score: number;
   user_id: string;
   assignment_id: string;
+  lecture_id: string;
   isProfessor: boolean;
 };
 const SubmitterList = ({

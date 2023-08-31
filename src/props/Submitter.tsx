@@ -16,6 +16,7 @@ const Submitter = ({ submittersProps }: submittersPropsList) => {
     score,
     user_id,
     assignment_id,
+    lecture_id,
     isProfessor,
   } = submittersProps;
   console.log("submittersProps:" + submittersProps);
@@ -25,6 +26,7 @@ const Submitter = ({ submittersProps }: submittersPropsList) => {
       state: {
         student_id: id, // student
         professor_id: user_id, // professor
+        lecture_id: lecture_id,
         assignment_id: assignment_id,
         isProfessor: isProfessor,
       },

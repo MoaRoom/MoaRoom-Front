@@ -25,6 +25,7 @@ const Assignment: FC = () => {
   // TODO: lecture_id도 필요함!(res가 list로 변경될 경우)
   const location = useLocation();
   const user_id = location.state.user_id;
+  const lecture_id = location.state.lecture_id;
 
   const [url, setUrl] = useState<UrlResp | string>("");
 
@@ -32,7 +33,7 @@ const Assignment: FC = () => {
 
   useEffect(() => {
     api.client
-      .get("/urls/" + user_id)
+      .get("/users/" + user_id + "/" + lecture_id+"/url")
       .then((response) => {
         setUrl(response.data.containerAddress);
       });

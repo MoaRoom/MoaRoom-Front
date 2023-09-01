@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import SubmitterList from "../props/SubmitterList";
 import "../style/home.css";
 import Navbar from "./Navbar";
-import {useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { SubmitterPropType } from "../props/SubmitterList";
 import api from "../utils/api";
 import axios from "axios";
@@ -20,14 +20,29 @@ const Submit: FC = () => {
   const [submittersPropsList, setSubmittersPropsList] = useState<
     SubmitterPropType[]
   >([]);
+  // const [apiEP, setApiEP] = useState<string>("");
 
   var tmpList: SubmitterPropType[] = [];
   useEffect(() => {
-    api.client
-      .get("/steps/" + assignment_id)
-      .then((response) => {
-        if (isProfessor) {
-          for (let i = 0; i < response.data.length; i++) {
+    api.client.get("/steps/" + assignment_id).then((response) => {
+      if (isProfessor) {
+        for (let i = 0; i < response.data.length; i++) {
+          tmpList.push({
+            id: response.data[i].id,
+            name: response.data[i].name,
+            step: response.data[i].step,
+            score: response.data[i].score,
+            user_id: user_id,
+            assignment_id: assignment_id,
+            lecture_id: lecture_id,
+            isProfessor: isProfessor,
+          } as SubmitterPropType);
+        }
+        setSubmittersPropsList(tmpList);
+      } else {
+        // 학생 것만 보이게
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].id == user_id) {
             tmpList.push({
               id: response.data[i].id,
               name: response.data[i].name,
@@ -35,68 +50,49 @@ const Submit: FC = () => {
               score: response.data[i].score,
               user_id: user_id,
               assignment_id: assignment_id,
-              lecture_id: lecture_id,
               isProfessor: isProfessor,
             } as SubmitterPropType);
           }
-          setSubmittersPropsList(tmpList);
-        } else {
-          // 학생 것만 보이게
-          for (let i = 0; i < response.data.length; i++) {
-            if (response.data[i].id == user_id) {
-              tmpList.push({
-                id: response.data[i].id,
-                name: response.data[i].name,
-                step: response.data[i].step,
-                score: response.data[i].score,
-                user_id: user_id,
-                assignment_id: assignment_id,
-                isProfessor: isProfessor,
-              } as SubmitterPropType);
-            }
-          }
-          setSubmittersPropsList(tmpList);
         }
-      });
+        setSubmittersPropsList(tmpList);
+      }
+    });
   }, []);
 
-  const [apiEP, setApiEP] = useState<string>("");
   const autoScore = () => {
-    for (let i = 0; i<submittersPropsList.length; i++){
-      var student_id = submittersPropsList[i].id
-      api.client
-      .get("/users/" + student_id + "/" + lecture_id + "/url")
-      .then((response) => {
-        setApiEP(response.data.apiEndpoint);
-        console.log("api_EP: ", apiEP)
-        axios
-        .get(
-          apiEP +
-            "/assignment/?id=" +
-            student_id +
-            "&assignment_id=" +
-            assignment_id
-        )
-        .then((response) => {
-          var answer = JSON.parse(response.data).answer;
-          var runtime = JSON.parse(response.data).runtime;
-          let params = {
-              user_id: student_id,
-              answer: answer,
-              runtime: runtime
-          };
-          api.client
-          .post(
-            "/assignments/"+assignment_id+"/auto", params
-          )
-          .then(() => {
-            window.location.reload();
-          })
-        });
+    // user_id is professor
+    console.log("/users/" + user_id + "/urls");
+    api.client.get("/users/" + user_id + "/urls").then((response) => {
+      // professor has multiple url models but only on apiEnpoint
+      response.data.map((urlmodel: any) => {
+        const apiEP = urlmodel.apiEndpoint;
+        for (let i = 0; i < submittersPropsList.length; i++) {
+          var student_id = submittersPropsList[i].id;
+          axios
+            .get(
+              apiEP +
+                "/assignment/?id=" +
+                student_id +
+                "&assignment_id=" +
+                assignment_id
+            )
+            .then((response) => {
+              var answer = JSON.parse(response.data).answer;
+              var runtime = JSON.parse(response.data).runtime;
+              let params = {
+                user_id: student_id,
+                answer: answer.slice(0, -1), // infra comes with /n
+                runtime: 1.0,
+              };
+              api.client
+                .post("/assignments/" + assignment_id + "/auto", params)
+                .then(() => {
+                  window.location.reload();
+                });
+            });
+        }
       });
-
-      
-    }
+    });
   };
 
   return (

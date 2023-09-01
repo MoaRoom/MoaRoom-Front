@@ -74,24 +74,22 @@ const AssignmentPage: FC = () => {
 
   useEffect(() => {
     var tmpList: AssignmentPropType[] = [];
-    api.client
-      .get("/assignments/users/" + user_id)
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          if (lecture_id == response.data[i].lecture_id) {
-            tmpList.push({
-              user_id: user_id,
-              isProfessor: isProfessor,
-              lecture_id: response.data[i].lecture_id,
-              assignment_id: response.data[i].assignment_id,
-              title: response.data[i].title,
-              step: response.data[i].step,
-              score: response.data[i].score,
-            } as AssignmentPropType);
-          }
-          setAssignmentPropsList(tmpList);
+    api.client.get("/assignments/users/" + user_id).then((response) => {
+      for (let i = 0; i < response.data.length; i++) {
+        if (lecture_id == response.data[i].lecture_id) {
+          tmpList.push({
+            user_id: user_id,
+            isProfessor: isProfessor,
+            lecture_id: response.data[i].lecture_id,
+            assignment_id: response.data[i].assignment_id,
+            title: response.data[i].title,
+            step: response.data[i].step,
+            score: response.data[i].score,
+          } as AssignmentPropType);
         }
-      });
+        setAssignmentPropsList(tmpList);
+      }
+    });
   }, []);
 
   return (
@@ -200,11 +198,9 @@ const AssignmentPage: FC = () => {
               </button>
             </>
           )}
-          {
-            assignmentPropsList == null &&(
-              <Paging count={assignmentList.length}/>
-            )
-          }
+          {assignmentPropsList == null && (
+            <Paging count={assignmentList.length} />
+          )}
         </div>
       </div>
     </>

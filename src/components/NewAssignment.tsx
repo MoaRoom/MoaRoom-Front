@@ -33,18 +33,17 @@ const newAssignment: FC = () => {
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const submitData = (data: any) => {
     let params = {
-        lecture_id: location.state.lecture_id,
-        professor_id: location.state.user_id,
-        title: data.title,
-        start_date: startDate!.toISOString(),
-        due_date: dueDate!.toISOString(),
-        description: data.description,
-        answer: data.answer,
-        runtime: data.runtime
+      lecture_id: location.state.lecture_id,
+      professor_id: location.state.user_id,
+      title: data.title,
+      start_date: startDate!.toISOString(),
+      due_date: dueDate!.toISOString(),
+      description: data.description,
+      answer: data.answer,
+      runtime: data.runtime,
     };
 
     setUserId(location.state.user_id);
-
 
     console.log(params);
     // TODO 서버 나오면 디버깅 필요
@@ -84,10 +83,7 @@ const newAssignment: FC = () => {
             className="row d-flex justify-content-center align-items-center"
             style={{ height: "80vh" }}
           >
-            <div
-              className="card mb-3 mt-3 rounded"
-              style={{ maxWidth: "80%" }}
-            >
+            <div className="card mb-3 mt-3 rounded" style={{ maxWidth: "80%" }}>
               <div className="col-md-12">
                 <div className="card-body">
                   <h3 className="card-title text-center text-secondary mt-3 mb-3">

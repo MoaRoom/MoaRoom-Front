@@ -90,25 +90,33 @@ const Score: FC = () => {
   const [score, setScore] = useState<number>();
 
   useEffect(() => {
-    api.client
-      .get("/users/" + student_id)
-      .then((response) => {
-        // setUser(JSON.parse(JSON.stringify(response.data)));
-        setName(JSON.parse(JSON.stringify(response.data)).name);
-        setUserNum(JSON.parse(JSON.stringify(response.data)).userNum);
-      });
+    api.client.get("/users/" + student_id).then((response) => {
+      // setUser(JSON.parse(JSON.stringify(response.data)));
+      setName(JSON.parse(JSON.stringify(response.data)).name);
+      setUserNum(JSON.parse(JSON.stringify(response.data)).userNum);
+    });
   }, []);
 
   useEffect(() => {
     if (professor_id != "") {
-      api.client
-        .get("/users/" + professor_id + "/" + lecture_id + "/url")
-        .then((response) => {
-          setUrl(response.data);
-          setApiEP(response.data.apiEndpoint);
+      api.client.get("/users/" + professor_id + "/urls").then((response) => {
+        // professor has multiple url models but only on apiEnpoint
+        response.data.map((urlmodel: any) => {
+          setUrl(urlmodel);
+          setApiEP(urlmodel.apiEndpoint);
+          // console.log(urlmodel.apiEndpoint);
         });
+      });
     }
   }, [professor_id]);
+
+  useEffect(() => {
+    api.client.get("/assignments/" + assignment_id).then((response) => {
+      console.log(
+        "answer: " + JSON.parse(JSON.stringify(response.data)).answer
+      );
+    });
+  }, []);
 
   useEffect(() => {
     if (apiEP != "") {
@@ -122,28 +130,26 @@ const Score: FC = () => {
         )
         .then((response) => {
           setCode(JSON.parse(response.data).content);
+          console.log(JSON.parse(response.data));
+          console.log("student answer: " + JSON.parse(response.data).answer);
         });
     }
   }, [apiEP]);
 
   useEffect(() => {
-    api.client
-      .get("/assignments/" + assignment_id)
-      .then((response) => {
-        setAssignment(JSON.parse(JSON.stringify(response.data)));
-        setAsgntitle(JSON.parse(JSON.stringify(response.data)).title);
-      });
+    api.client.get("/assignments/" + assignment_id).then((response) => {
+      setAssignment(JSON.parse(JSON.stringify(response.data)));
+      setAsgntitle(JSON.parse(JSON.stringify(response.data)).title);
+    });
   }, []);
   useEffect(() => {
-    api.client
-      .get("/lectures/info/" + assignment_id)
-      .then((response) => {
-        setLecture(response.data);
-        setLectitle(response.data.title);
-        setRoom(response.data.room);
-        setPname(response.data.professor_name);
-        setLid(response.data.lecture_id);
-      });
+    api.client.get("/lectures/info/" + assignment_id).then((response) => {
+      setLecture(response.data);
+      setLectitle(response.data.title);
+      setRoom(response.data.room);
+      setPname(response.data.professor_name);
+      setLid(response.data.lecture_id);
+    });
   }, []);
 
   const manualScore = (data: any) => {

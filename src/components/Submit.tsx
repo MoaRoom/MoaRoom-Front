@@ -26,19 +26,23 @@ const Submit: FC = () => {
   useEffect(() => {
     api.client.get("/steps/" + assignment_id).then((response) => {
       if (isProfessor) {
-        for (let i = 0; i < response.data.length; i++) {
-          tmpList.push({
-            id: response.data[i].id,
-            name: response.data[i].name,
-            step: response.data[i].step,
-            score: response.data[i].score,
-            user_id: user_id,
-            assignment_id: assignment_id,
-            lecture_id: lecture_id,
-            isProfessor: isProfessor,
-          } as SubmitterPropType);
-        }
-        setSubmittersPropsList(tmpList);
+        console.log(response.data)
+        // 기존 코드로 인해 list에 값이 중복으로 들어가게 되므로 삭제
+        //for (let i = 0; i < response.data.length; i++) {
+        //   tmpList.push({
+        //     id: response.data[i].id,
+        //     name: response.data[i].name,
+        //     step: response.data[i].step,
+        //     score: response.data[i].score,
+        //     user_id: user_id,
+        //     assignment_id: assignment_id,
+        //     lecture_id: lecture_id,
+        //     isProfessor: isProfessor,
+        //   } as SubmitterPropType);
+        //   console.log(tmpList)
+        // }
+        // setSubmittersPropsList(tmpList);
+        setSubmittersPropsList(response.data)
       } else {
         // 학생 것만 보이게
         for (let i = 0; i < response.data.length; i++) {
@@ -54,12 +58,13 @@ const Submit: FC = () => {
             } as SubmitterPropType);
           }
         }
-        setSubmittersPropsList(tmpList);
+        console.log(submittersPropsList)
       }
     });
   }, []);
 
   const autoScore = () => {
+    console.log(submittersPropsList)
     // user_id is professor
     console.log("/users/" + user_id + "/urls");
     api.client.get("/users/" + user_id + "/urls").then((response) => {

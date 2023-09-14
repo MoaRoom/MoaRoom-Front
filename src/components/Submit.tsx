@@ -72,28 +72,27 @@ const Submit: FC = () => {
       response.data.map((urlmodel: any) => {
         const apiEP = urlmodel.apiEndpoint;
         for (let i = 0; i < submittersPropsList.length; i++) {
+          var student_id = submittersPropsList[i].id;
           axios
             .get(
               apiEP +
                 "/assignment/?id=" +
-                submittersPropsList[i].id +
+                student_id +
                 "&assignment_id=" +
                 assignment_id
             )
             .then((response) => {
-              console.log(response)
               var answer = JSON.parse(response.data).answer;
               var runtime = JSON.parse(response.data).runtime;
               let params = {
-                user_id: submittersPropsList[i].id,
+                user_id: student_id,
                 answer: answer.slice(0, -1), // infra comes with /n
                 runtime: 1.0,
               };
-              console.log(params)
               api.client
                 .post("/assignments/" + assignment_id + "/auto", params)
                 .then(() => {
-                  console.log("자동채점 api 호출")
+                  window.location.reload();
                 });
             });
         }

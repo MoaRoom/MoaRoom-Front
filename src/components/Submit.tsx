@@ -87,7 +87,8 @@ const Submit: FC = () => {
               api.client
                 .post("/assignments/" + assignment_id + "/auto", params)
                 .then(() => {
-                  window.location.reload();
+                  console.log("자동채점 api 호출");
+                  // window.location.reload();
                 });
             });
         }

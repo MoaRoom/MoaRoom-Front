@@ -26,7 +26,7 @@ const Submit: FC = () => {
   useEffect(() => {
     api.client.get("/steps/" + assignment_id).then((response) => {
       if (isProfessor) {
-        console.log(response.data);
+        console.log(response.data)
         //기존 코드로 인해 list에 값이 중복으로 들어가게 되므로 삭제
         for (let i = 0; i < response.data.length; i++) {
           tmpList.push({
@@ -39,7 +39,7 @@ const Submit: FC = () => {
             lecture_id: lecture_id,
             isProfessor: isProfessor,
           } as SubmitterPropType);
-          console.log(tmpList);
+          console.log(tmpList)
         }
         setSubmittersPropsList(tmpList);
         //setSubmittersPropsList(response.data)
@@ -58,13 +58,13 @@ const Submit: FC = () => {
             } as SubmitterPropType);
           }
         }
-        console.log(submittersPropsList);
+        console.log(submittersPropsList)
       }
     });
   }, []);
 
   const autoScore = () => {
-    console.log(submittersPropsList);
+    console.log(submittersPropsList)
     // user_id is professor
     console.log("/users/" + user_id + "/urls");
     api.client.get("/users/" + user_id + "/urls").then((response) => {
@@ -81,7 +81,7 @@ const Submit: FC = () => {
                 assignment_id
             )
             .then((response) => {
-              console.log(response);
+              console.log(response)
               var answer = JSON.parse(response.data).answer;
               var runtime = JSON.parse(response.data).runtime;
               let params = {
@@ -97,10 +97,17 @@ const Submit: FC = () => {
                   // window.location.reload();
                 });
             });
-        }
+          }
+        });
       });
-    });
-  };
+      // 채점 종료 진행상황 반영
+      api.client
+          .get("steps/assignments/"+assignment_id+"/professor/"+user_id)
+          .then((response)=>{
+            console.log(response.data)
+          })
+      
+    };
 
   return (
     <>

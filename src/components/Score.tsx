@@ -73,6 +73,7 @@ const Score: FC = () => {
   // data
   const [assignment, setAssignment] = useState<AssignmentResp>();
   const [code, setCode] = useState<string>("");
+  const [answer, setAnswer] = useState<string>("");
   const [user, setUser] = useState<UserResp>();
   const [lecture, setLecture] = useState<LectureResp>();
   const [url, setUrl] = useState<UrlResp>();
@@ -130,6 +131,7 @@ const Score: FC = () => {
         )
         .then((response) => {
           setCode(JSON.parse(response.data).content);
+          setAnswer(JSON.parse(response.data).answer);
           console.log(JSON.parse(response.data));
           console.log("student answer: " + JSON.parse(response.data).answer);
         });
@@ -220,6 +222,8 @@ const Score: FC = () => {
           >
             <div className="card mb-6 mt-3 profile-lecture-box">
               <File content={code} />
+              <p></p>
+              <File content={answer} />
             </div>
             <div className="card mb-3 mt-3 profile-box">
               <div className="card mb-3 mt-3 rounded" style={{ float: "left" }}>

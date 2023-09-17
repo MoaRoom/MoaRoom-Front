@@ -89,11 +89,12 @@ const Submit: FC = () => {
                 answer: answer.slice(0, -1), // infra comes with /n
                 runtime: 1.0,
               };
-              console.log(params)
+              console.log(params);
               api.client
                 .post("/assignments/" + assignment_id + "/auto", params)
                 .then(() => {
-                  console.log("자동채점 api 호출")
+                  console.log("자동채점 api 호출");
+                  // window.location.reload();
                 });
             });
           }

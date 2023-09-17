@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../style/home.css";
 import MyPageLectureList, { LectureType } from "../props/MyPageLectureList";
+import Paging from "../components/Paging";
 import Modal from "../props/Modal";
 import Navbar from "./Navbar";
 import api from "../utils/api";
@@ -359,6 +360,11 @@ const MyPage: FC = () => {
               <p className="">진행 중 강의</p>
               {/* 강의 리스트 */}
               <MyPageLectureList lectureList={lectureList} />
+              {
+            lectureList != null && (
+            <Paging data={lectureList.length} perPage={6} />
+            )
+          }
             </div>
           </div>
         </div>

@@ -4,8 +4,16 @@ import "../style/Paging.css";
 
 const Paging = (props:any) => {
   const [page, setPage] = useState(1);
-  const count = props.data
+  let count = 0;
+  let perPage = 5;
+  if( props.data != undefined){
+    count = props.data
+  }
+  if(props.perPage != undefined){
+    perPage = props.perPage
+  }
   console.log(props.data)
+  console.log(props.perPage)
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -14,7 +22,7 @@ const Paging = (props:any) => {
   return (
     <Pagination
       activePage={page}
-      itemsCountPerPage={5}
+      itemsCountPerPage={perPage}
       totalItemsCount={count}
       pageRangeDisplayed={5}
       prevPageText={"‹"}

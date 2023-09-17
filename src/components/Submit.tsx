@@ -99,6 +99,13 @@ const Submit: FC = () => {
           }
         });
       });
+      // 채점 종료 진행상황 반영
+      api.client
+          .get("steps/assignments/"+assignment_id+"/professor/"+user_id)
+          .then((response)=>{
+            console.log(response.data)
+          })
+      
     };
 
   return (

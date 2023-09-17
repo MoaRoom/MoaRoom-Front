@@ -1,7 +1,7 @@
 import React, { FC, useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "../style/LecturePage.css";
+import "../style/AssignmentPage.css";
 import Paging from "../components/Paging";
 import Assignment from "../props/Assignment";
 import AssignmentModal from "../props/AssignmentModal";
@@ -178,7 +178,7 @@ const AssignmentPage: FC = () => {
           </div>
           {assignmentPropsList &&
             assignmentPropsList.map((assignment) => (
-              <Assignment assignment={assignment} />
+              <Assignment key={assignment.assignment_id} assignment={assignment} />
             ))}
           {isProfessor == true && (
             <>
@@ -198,9 +198,11 @@ const AssignmentPage: FC = () => {
               </button>
             </>
           )}
-          {assignmentPropsList == null && (
-            <Paging count={assignmentList.length} />
-          )}
+          {
+            assignmentPropsList != null && (
+            <Paging data={assignmentPropsList.length} perPage={3} />
+            )
+          }
         </div>
       </div>
     </>

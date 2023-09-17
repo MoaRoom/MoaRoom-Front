@@ -4,6 +4,7 @@ import "../style/home.css";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
 import { SubmitterPropType } from "../props/SubmitterList";
+import Paging from "../components/Paging";
 import api from "../utils/api";
 import axios from "axios";
 const Submit: FC = () => {
@@ -138,6 +139,11 @@ const Submit: FC = () => {
             </button>
           </div>
           <SubmitterList submittersPropsList={submittersPropsList} />
+          {
+            submittersPropsList != null && (
+            <Paging data={submittersPropsList.length}/>
+            )
+          }
         </div>
       </div>
     </>

@@ -72,7 +72,7 @@ const LecturePage: FC = () => {
           </div>
           {lectureList &&
             lectureList.map((lecture) => (
-              <Lecture lecture={lecture} isProfessor={isProfessor}></Lecture>
+              <Lecture key={lecture.lecture_id} lecture={lecture} isProfessor={isProfessor}></Lecture>
             ))}
           {
             lectureList != null && (
